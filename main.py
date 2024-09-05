@@ -12,8 +12,8 @@ TELEGRAM_BOT_TOKEN = "7440411032:AAH7OU28kZNyID37DZsXWeKFGSJxba6yOjU"
 # List of sender email configurations (SMTP server details, email, and password)
 senders = [
     {
-        "smtp_server": "smtp.gmail.com",
-        "port": 465,
+        "smtp_server": "smtp.gmail.com",  # Update with the actual SMTP server
+        "port": 465,  # SSL port
         "sender_email": "massacres1001@gmail.com",
         "sender_password": "massacres123"
     },
@@ -39,9 +39,8 @@ def send_email(recipient, sender_email, sender_password, smtp_server, port, subj
         message['Subject'] = subject
         message.attach(MIMEText(body, 'plain'))
 
-        # Create SMTP session and send the email
-        with smtplib.SMTP(smtp_server, port) as server:
-            server.starttls()  # Secure the connection
+        # Create SMTP SSL session and send the email
+        with smtplib.SMTP_SSL(smtp_server, port) as server:
             server.login(sender_email, sender_password)
             server.send_message(message)
         return True  # Return True if the email is sent successfully
