@@ -13,7 +13,7 @@ senders = [
 
 # Constants
 MAX_EMAILS_PER_SENDER = 80
-TELEGRAM_BOT_TOKEN = "7440411032:AAH7OU28kZNyID37DZsXWeKFGSJxba6yOjU"  # Replace with your bot token
+TELEGRAM_BOT_TOKEN = "6795292888:AAGPvq5pOqoGIHXUpLrRv2EKytK_0gAIli4"  # Replace with your bot token
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 465
 
