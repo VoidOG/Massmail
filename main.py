@@ -14,7 +14,7 @@ authorized_users = {
     6663845789: '911',   # User ID 1 with Password 1
     6551446148: '911',   # User ID 2 with Password 2
     6698364560: '6969',  # User ID 3 with Password 3
-    6698364560: '1111'   # User ID 4 with Password 4
+    1110013191: '1111'   # User ID 4 with Password 4
 }
 
 # List of sender email configurations (Gmail SMTP server details, email, and password)
