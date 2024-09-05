@@ -1,16 +1,30 @@
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-import pandas as pd
 import time
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackContext
+import random
 
-# Load sender details from the CSV file
-senders = pd.read_csv('senders.csv')
-
-# Your Telegram bot token
+# Replace with your Telegram bot token
 TELEGRAM_BOT_TOKEN = "7440411032:AAH7OU28kZNyID37DZsXWeKFGSJxba6yOjU"
+
+# List of sender email configurations (SMTP server details, email, and password)
+senders = [
+    {
+        "smtp_server": "smtp.gmail.com",
+        "port": 465,
+        "sender_email": "massacres1001@gmail.com",
+        "sender_password": "massacres123"
+    },
+    {
+        "smtp_server": "smtp.gmail.com",
+        "port": 465,
+        "sender_email": "imvoid1001@gmail.com",
+        "sender_password": "Void@123"
+    },
+    # Add more sender configurations as needed
+]
 
 # Define stages for the conversation handler
 RECIPIENT, SUBJECT, BODY, NUMBER_OF_EMAILS, TIME_DELAY = range(5)
@@ -83,13 +97,13 @@ def get_time_delay(update: Update, context: CallbackContext):
         count = 0
         for _ in range(number_of_emails):
             # Randomly select a sender from the list
-            row = senders.sample().iloc[0]
+            sender = random.choice(senders)
             if send_email(
                 recipient=recipient,
-                sender_email=row['Sender Email'],
-                sender_password=row['Sender Password'],
-                smtp_server=row['SMTP Server'],
-                port=row['Port'],
+                sender_email=sender['sender_email'],
+                sender_password=sender['sender_password'],
+                smtp_server=sender['smtp_server'],
+                port=sender['port'],
                 subject=subject,
                 body=body
             ):
