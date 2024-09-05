@@ -1,198 +1,182 @@
+# © Cenzo @Cenzeo
+# meet me on telegram 
 import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+import ssl
 import time
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackContext
-import random
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, ConversationHandler, CallbackQueryHandler
+from datetime import datetime, timedelta
 
-# Replace with your Telegram bot token
-TELEGRAM_BOT_TOKEN = '7440411032:AAH7OU28kZNyID37DZsXWeKFGSJxba6yOjU'
-
-# Define authorized users and their passwords
-authorized_users = {
-    6663845789: '911',      # User ID 1 with Password 1
-    6551446148: '911',      # User ID 2 with Password 2
-    6698364560: '6969',     # User ID 3 with Password 3
-    1110013191: '9999'      # Updated User ID 4 with Password 4
-}
-
-# List of sender email configurations (Gmail SMTP server details, email, and password)
+# Email credentials and configuration
 senders = [
-    {
-        "smtp_server": "smtp.gmail.com",  # Gmail SMTP server
-        "port": 465,  # SSL port for Gmail
-        "sender_email": "imvoid1001@gmail.com",
-        "sender_password": "mjmkalzfveddvkmr"
-    },
-    {
-        "smtp_server": "smtp.gmail.com",
-        "port": 465,
-        "sender_email": "massacres1001@gmail.com",
-        "sender_password": "vjkfmjnsiiajkbzh"
-    }
+    {"sender_email": "imvoid1001@gmail.com", "password": "mjmkalzfveddvkmr"},
+    {"sender_email": "massacres1001@gmail.com", "password": "vjkfmjnsiiajkbzh"}
 ]
 
-# Maximum emails allowed per session
-MAX_EMAILS_PER_SESSION = 50
+# Constants
+MAX_EMAILS_PER_SENDER = 80
+TELEGRAM_BOT_TOKEN = "6795292888:AAGPvq5pOqoGIHXUpLrRv2EKytK_0gAIli4"  # Replace with your bot token
+SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 465
 
-# Define stages for the conversation handler
-PASSWORD, RECIPIENT, SUBJECT, BODY, NUMBER_OF_EMAILS, TIME_DELAY = range(6)
+# Authorized users with passwords
+authorized_users = {
+    6663845789: "911",
+    6698364560: "6969",
+    1110013191: "1111",
+    6551446148: "911"
+}
 
-def send_email(recipient, sender_email, sender_password, smtp_server, port, subject, body):
-    """Function to send an email using specified sender credentials."""
-    try:
-        # Set up the email message
-        message = MIMEMultipart()
-        message['From'] = sender_email
-        message['To'] = recipient
-        message['Subject'] = subject
-        message.attach(MIMEText(body, 'plain'))
+# States for conversation handler
+PASSWORD, RECIPIENT_TYPE, RECIPIENT, SUBJECT, BODY, NUMBER_OF_EMAILS, TIME_DELAY = range(7)
 
-        # Create SMTP SSL session and send the email
-        with smtplib.SMTP_SSL(smtp_server, port) as server:
-            server.login(sender_email, sender_password)
-            server.send_message(message)
-        return True  # Return True if the email is sent successfully
+# Initialize global variables to track email statistics
+email_stats = {sender['sender_email']: 0 for sender in senders}  # Emails sent today
+weekly_email_stats = {sender['sender_email']: 0 for sender in senders}  # Emails sent this week
+overall_email_stats = {sender['sender_email']: 0 for sender in senders}  # Total emails sent
 
-    except Exception as e:
-        print(f'Failed to send email from {sender_email} to {recipient}: {e}')
-        return False  # Return False if the email fails to send
+# Function to track email statistics
+def track_email_stats(sender_email):
+    email_stats[sender_email] += 1
+    weekly_email_stats[sender_email] += 1
+    overall_email_stats[sender_email] += 1
 
+# Start command
 def start(update: Update, context: CallbackContext):
-    """Start the conversation and send a welcome message with a button."""
-    keyboard = [
-        [InlineKeyboardButton("Developer", url="https://t.me/Cenzeo")]
-    ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    
-    welcome_message = (
-        "🚀 **Welcome to Mass Mail** 🚀\n\n"
-        "The ultimate bulk email tool designed for those who think big. "
-        "Here, you wield the power to send emails at scale with precision and control.\n\n"
-        "Created by the OG, Cenzo, for those who refuse to settle.\n\n"
-        "⚙️ Let’s get to work, soldier. Time to make an impact. ⚙️"
-    )
-
-    update.message.reply_text(welcome_message, reply_markup=reply_markup)
-    return PASSWORD
-
-def check_password(update: Update, context: CallbackContext):
-    """Check if the entered password is correct."""
+    """Sends a welcome message with buttons linking to the developer and channel."""
     user_id = update.message.from_user.id
-    entered_password = update.message.text.strip()  # Strip any whitespace from input
-
-    # Debug: Print the user ID and entered password for troubleshooting
-    print(f"Debug: User ID: {user_id}, Entered Password: {entered_password}")
-
-    # Check if the user ID and password match an entry in authorized_users
-    if authorized_users.get(user_id) == entered_password:
-        context.user_data['authenticated'] = True
-        update.message.reply_text('🔒 Authentication successful! You’re in, soldier. 🔓\nNow drop that recipient email address and let’s get this mission rolling.')
-        return RECIPIENT
+    if user_id in authorized_users:
+        welcome_message = (
+            f"👾 **Welcome to Mass Mail Bot** 👾\n\n"
+            "🚀 The ultimate tool for sending mass emails securely and efficiently.\n"
+            "💼 Developed by Cenzo (@Cenzeo) for smooth operations.\n\n"
+            "🔥 Click below to connect with the Developer and stay updated on our Channel!"
+        )
+        keyboard = [
+            [InlineKeyboardButton("👨‍💻 Developer", url="https://t.me/Cenzeo")],
+            [InlineKeyboardButton("📢 Channel", url="https://t.me/themassacres")],
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        update.message.reply_photo(
+            "https://telegra.ph/file/0b4853eb7a9d860f3e73b.jpg",
+            caption=welcome_message,
+            reply_markup=reply_markup
+        )
     else:
-        # If the user ID is found but the password doesn't match, inform about incorrect password
-        if user_id in authorized_users:
-            update.message.reply_text('🚫 Incorrect password. Try again or hit /cancel to back out.')
-        else:
-            # If the user ID itself is not recognized, inform the user
-            update.message.reply_text('⛔ Access denied. You’re not authorized to use this bot.')
-        
+        update.message.reply_text("⚠️ You are not authorized to use this bot. Contact the developer for access.")
+
+# Help command
+def help_command(update: Update, context: CallbackContext):
+    """Displays help information about the bot's usage."""
+    help_message = (
+        "📚 **Help Menu** 📚\n\n"
+        "💬 Use the following commands to navigate the bot:\n\n"
+        "/start - Start the bot and display the welcome message\n"
+        "/help - Display this help message\n"
+        "/stats - View global email sending statistics (requires passcode)\n\n"
+        "⚙️ To use this bot, you will be guided step-by-step through sending emails.\n"
+        "Stay within the email limits and enjoy safe mass mailing!"
+    )
+    update.message.reply_text(help_message)
+
+# Password check for /stats command
+def stats_command(update: Update, context: CallbackContext):
+    """Prompt the user to enter the passcode to view stats."""
+    user_id = update.message.from_user.id
+    if user_id in authorized_users:
+        update.message.reply_text('🔑 Enter the passcode to access global email stats.')
+        context.user_data['awaiting_stats_password'] = True
         return PASSWORD
-
-def get_recipient(update: Update, context: CallbackContext):
-    """Store the recipient email and ask for the subject."""
-    context.user_data['recipient'] = update.message.text
-    update.message.reply_text('📧 Got it. Now, hit me with the subject of the email.')
-    return SUBJECT
-
-def get_subject(update: Update, context: CallbackContext):
-    """Store the subject and ask for the body."""
-    context.user_data['subject'] = update.message.text
-    update.message.reply_text('📝 Subject locked and loaded. Now, drop the body of the email.')
-    return BODY
-
-def get_body(update: Update, context: CallbackContext):
-    """Store the body and ask for the number of emails."""
-    context.user_data['body'] = update.message.text
-    update.message.reply_text('✍️ Body received. How many emails are we firing off today? (Max 50)')
-    return NUMBER_OF_EMAILS
-
-def get_number_of_emails(update: Update, context: CallbackContext):
-    """Store the number of emails and ask for the time delay."""
-    try:
-        number_of_emails = int(update.message.text)
-        if number_of_emails > MAX_EMAILS_PER_SESSION:
-            update.message.reply_text(f'⚠️ You’ve requested {number_of_emails} emails. The max cap is {MAX_EMAILS_PER_SESSION}. Setting to 50.')
-            number_of_emails = MAX_EMAILS_PER_SESSION
-        
-        context.user_data['number_of_emails'] = number_of_emails
-        update.message.reply_text('📊 Number of emails locked in. Now, set the time delay (in seconds) between each email.')
-        return TIME_DELAY
-    except ValueError:
-        update.message.reply_text('❌ Invalid number. Let’s try that again, champ.')
-        return NUMBER_OF_EMAILS
-
-def get_time_delay(update: Update, context: CallbackContext):
-    """Store the time delay and start sending the emails."""
-    try:
-        context.user_data['time_delay'] = float(update.message.text)
-        recipient = context.user_data['recipient']
-        subject = context.user_data['subject']
-        body = context.user_data['body']
-        number_of_emails = context.user_data['number_of_emails']
-        time_delay = context.user_data['time_delay']
-
-        # Send the specified number of emails with a time delay
-        count = 0
-        for _ in range(number_of_emails):
-            # Randomly select a sender from the list
-            sender = random.choice(senders)
-            if send_email(
-                recipient=recipient,
-                sender_email=sender['sender_email'],
-                sender_password=sender['sender_password'],
-                smtp_server=sender['smtp_server'],
-                port=sender['port'],
-                subject=subject,
-                body=body
-            ):
-                count += 1
-                update.message.reply_text(f"✅ {count} email{'s' if count > 1 else ''} sent. Keep going, we’re just getting started.")
-
-            time.sleep(time_delay)
-
-        update.message.reply_text("🎯 Mission accomplished. All emails have been sent. Good work.")
+    else:
+        update.message.reply_text("⚠️ You are not authorized to access this command.")
         return ConversationHandler.END
-    except ValueError:
-        update.message.reply_text('❌ Invalid time delay. Try again, soldier.')
-        return TIME_DELAY
 
-def cancel(update: Update, context: CallbackContext):
-    """Cancel the conversation."""
-    update.message.reply_text('❌ Operation aborted. Until next time.')
+def display_stats(update: Update, context: CallbackContext):
+    """Displays the stats after verifying the passcode."""
+    user_id = update.message.from_user.id
+    entered_password = update.message.text.strip()
+    if user_id in authorized_users and entered_password == authorized_users[user_id]:
+        # Create inline keyboard with options to view stats for Today, Weekly, and Overall
+        keyboard = [
+            [InlineKeyboardButton("📅 Today", callback_data='stats_today')],
+            [InlineKeyboardButton("📆 Weekly", callback_data='stats_weekly')],
+            [InlineKeyboardButton("📊 Overall", callback_data='stats_overall')],
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        update.message.reply_text('📊 Select the stats timeframe:', reply_markup=reply_markup)
+    else:
+        update.message.reply_text('🚫 Incorrect passcode. Access denied.')
     return ConversationHandler.END
 
+def show_stats(update: Update, context: CallbackContext):
+    """Display the selected stats based on user input."""
+    query = update.callback_query
+    query.answer()  # Acknowledge the callback
+
+    if query.data == 'stats_today':
+        stats_message = generate_stats_message(email_stats, "📅 Today's Email Stats")
+    elif query.data == 'stats_weekly':
+        stats_message = generate_stats_message(weekly_email_stats, "📆 Weekly Email Stats")
+    elif query.data == 'stats_overall':
+        stats_message = generate_stats_message(overall_email_stats, "📊 Overall Email Stats")
+    
+    query.edit_message_text(stats_message)
+
+def generate_stats_message(stats, title):
+    """Generates a stats message for the given stats dictionary."""
+    total_possible_emails = MAX_EMAILS_PER_SENDER * len(senders)
+    total_sent = sum(stats.values())
+    remaining_emails = total_possible_emails - total_sent
+
+    stats_message = (
+        f"{title}\n\n"
+        f"📬 **Total Emails Allowed:** {total_possible_emails}\n"
+        f"📤 **Total Emails Sent:** {total_sent}\n"
+        f"📝 **Remaining Emails:** {remaining_emails}\n\n"
+        "🕵️‍♂️ **User Activity:**\n"
+    )
+
+    for sender, count in stats.items():
+        stats_message += f"🧑‍💼 Sender: {sender}, 📧 Emails Sent: {count}\n"
+
+    return stats_message
+
+# Handling email sending flow
+def select_recipient_type(update: Update, context: CallbackContext):
+    """Ask the user if they want to send to a single or multiple recipients."""
+    keyboard = [
+        [InlineKeyboardButton("Single Recipient", callback_data='single')],
+        [InlineKeyboardButton("Multiple Recipients", callback_data='multiple')],
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.message.reply_text("Would you like to send to a single recipient or multiple recipients?", reply_markup=reply_markup)
+
+# Define other command handlers (get_recipient, get_subject, get_body, etc.)
+# These would guide the user through entering the details of their email
+
 def main():
-    """Start the bot and handle commands."""
+    """Main function to set up the bot handlers and start the bot."""
     updater = Updater(TELEGRAM_BOT_TOKEN, use_context=True)
     dispatcher = updater.dispatcher
 
-    # Define the conversation handler
-    conversation_handler = ConversationHandler(
+    # Define the conversation handler for sending emails
+    conv_handler = ConversationHandler(
         entry_points=[CommandHandler('start', start)],
         states={
-            PASSWORD: [MessageHandler(Filters.text & ~Filters.command, check_password)],
-            RECIPIENT: [MessageHandler(Filters.text & ~Filters.command, get_recipient)],
-            SUBJECT: [MessageHandler(Filters.text & ~Filters.command, get_subject)],
-            BODY: [MessageHandler(Filters.text & ~Filters.command, get_body)],
-            NUMBER_OF_EMAILS: [MessageHandler(Filters.text & ~Filters.command, get_number_of_emails)],
-            TIME_DELAY: [MessageHandler(Filters.text & ~Filters.command, get_time_delay)],
+            PASSWORD: [MessageHandler(Filters.text & ~Filters.command, display_stats)],
+            RECIPIENT_TYPE: [CallbackQueryHandler(select_recipient_type)],
+            # Define other states to handle email sending inputs
         },
-        fallbacks=[CommandHandler('cancel', cancel)],
+        fallbacks=[CommandHandler('cancel', lambda update, context: update.message.reply_text('Operation cancelled.'))],
     )
 
-    dispatcher.add_handler(conversation_handler)
+    # Add command handlers
+    dispatcher.add_handler(conv_handler)
+    dispatcher.add_handler(CommandHandler('help', help_command))
+    dispatcher.add_handler(CommandHandler('stats', stats_command))
+    dispatcher.add_handler(CallbackQueryHandler(show_stats, pattern='^stats_'))
+
+    # Start the bot
     updater.start_polling()
     updater.idle()
 
