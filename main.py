@@ -15,13 +15,13 @@ senders = [
         "smtp_server": "smtp.gmail.com",  # Update with the actual SMTP server
         "port": 465,  # SSL port
         "sender_email": "massacres1001@gmail.com",
-        "sender_password": "massacres123"
+        "sender_password": "vjkfmjnsiiajkbzh"
     },
     {
         "smtp_server": "smtp.gmail.com",
         "port": 465,
-        "sender_email": "imvoid1001@gmail.com",
-        "sender_password": "Void@123"
+        "sender_email": "imvoid1003@gmail.com",
+        "sender_password": "mjmkalzfveddvkmr"
     },
     # Add more sender configurations as needed
 ]
