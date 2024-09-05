@@ -1,5 +1,3 @@
-# © Cenzo @Cenzeo
-# meet me on telegram 
 import smtplib
 import ssl
 import time
@@ -15,20 +13,15 @@ senders = [
 
 # Constants
 MAX_EMAILS_PER_SENDER = 80
-TELEGRAM_BOT_TOKEN = "6795292888:AAGPvq5pOqoGIHXUpLrRv2EKytK_0gAIli4"  # Replace with your bot token
+TELEGRAM_BOT_TOKEN = "7440411032:AAH7OU28kZNyID37DZsXWeKFGSJxba6yOjU"  # Replace with your bot token
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 465
 
-# Authorized users with passwords
-authorized_users = {
-    6663845789: "911",
-    6698364560: "6969",
-    1110013191: "1111",
-    6551446148: "911"
-}
+# Authorized users (only user IDs)
+authorized_users = [6663845789, 6698364560, 1110013191, 6551446148]
 
 # States for conversation handler
-PASSWORD, RECIPIENT_TYPE, RECIPIENT, SUBJECT, BODY, NUMBER_OF_EMAILS, TIME_DELAY = range(7)
+RECIPIENT_TYPE, RECIPIENT, SUBJECT, BODY, NUMBER_OF_EMAILS, TIME_DELAY = range(6)
 
 # Initialize global variables to track email statistics
 email_stats = {sender['sender_email']: 0 for sender in senders}  # Emails sent today
@@ -70,33 +63,28 @@ def help_command(update: Update, context: CallbackContext):
     """Displays help information about the bot's usage."""
     help_message = (
         "📚 **Help Menu** 📚\n\n"
-        "💬 Use the following commands to navigate the bot:\n\n"
-        "/start - Start the bot and display the welcome message\n"
-        "/help - Display this help message\n"
-        "/stats - View global email sending statistics (requires passcode)\n\n"
-        "⚙️ To use this bot, you will be guided step-by-step through sending emails.\n"
-        "Stay within the email limits and enjoy safe mass mailing!"
+        "Welcome to the Mass Mail Bot! Here's a guide on how to use the bot:\n\n"
+        "1. **/start** - Start the bot and receive a welcome message with links to the Developer and our Channel.\n\n"
+        "2. **/help** - Displays this help message with detailed instructions on how to use the bot.\n\n"
+        "3. **Initiates the email sending process. You will be guided through:**\n"
+        "   - Choosing whether to send to a single or multiple recipients.\n"
+        "   - Providing the recipient's email address(es).\n"
+        "   - Entering the subject and body of the email.\n"
+        "   - Specifying the number of emails to send and the time delay between them.\n\n"
+        "4. **/cancel** - Use this command at any time to cancel the current operation.\n\n"
+        "⚠️ **Important Notes:**\n"
+        "- Ensure you follow the instructions step-by-step to successfully send emails.\n"
+        "- Stay within the email limits to avoid issues.\n"
+        "- Contact the bot administrator for any issues or further assistance.\n\n"
+        "If you need more help or encounter any issues, feel free to reach out to the Developer."
     )
     update.message.reply_text(help_message)
 
-# Password check for /stats command
+# Stats command
 def stats_command(update: Update, context: CallbackContext):
     """Prompt the user to enter the passcode to view stats."""
     user_id = update.message.from_user.id
     if user_id in authorized_users:
-        update.message.reply_text('🔑 Enter the passcode to access global email stats.')
-        context.user_data['awaiting_stats_password'] = True
-        return PASSWORD
-    else:
-        update.message.reply_text("⚠️ You are not authorized to access this command.")
-        return ConversationHandler.END
-
-def display_stats(update: Update, context: CallbackContext):
-    """Displays the stats after verifying the passcode."""
-    user_id = update.message.from_user.id
-    entered_password = update.message.text.strip()
-    if user_id in authorized_users and entered_password == authorized_users[user_id]:
-        # Create inline keyboard with options to view stats for Today, Weekly, and Overall
         keyboard = [
             [InlineKeyboardButton("📅 Today", callback_data='stats_today')],
             [InlineKeyboardButton("📆 Weekly", callback_data='stats_weekly')],
@@ -105,8 +93,7 @@ def display_stats(update: Update, context: CallbackContext):
         reply_markup = InlineKeyboardMarkup(keyboard)
         update.message.reply_text('📊 Select the stats timeframe:', reply_markup=reply_markup)
     else:
-        update.message.reply_text('🚫 Incorrect passcode. Access denied.')
-    return ConversationHandler.END
+        update.message.reply_text("⚠️ You are not authorized to access this command.")
 
 def show_stats(update: Update, context: CallbackContext):
     """Display the selected stats based on user input."""
@@ -150,33 +137,130 @@ def select_recipient_type(update: Update, context: CallbackContext):
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text("Would you like to send to a single recipient or multiple recipients?", reply_markup=reply_markup)
+    return RECIPIENT_TYPE
 
-# Define other command handlers (get_recipient, get_subject, get_body, etc.)
-# These would guide the user through entering the details of their email
+def get_recipient(update: Update, context: CallbackContext):
+    """Get the recipient(s) address(es)."""
+    query = update.callback_query
+    context.user_data['recipient_type'] = query.data
+    query.edit_message_text("Please send the recipient email address(es).")
+    return RECIPIENT
+
+def get_subject(update: Update, context: CallbackContext):
+    """Get the email subject."""
+    context.user_data['recipients'] = update.message.text.strip()
+    update.message.reply_text("Please send the email subject.")
+    return SUBJECT
+
+def get_body(update: Update, context: CallbackContext):
+    """Get the email body."""
+    context.user_data['subject'] = update.message.text.strip()
+    update.message.reply_text("Please send the email body.")
+    return BODY
+
+def get_number_of_emails(update: Update, context: CallbackContext):
+    """Get the number of emails to send."""
+    context.user_data['body'] = update.message.text.strip()
+    update.message.reply_text("How many emails would you like to send?")
+    return NUMBER_OF_EMAILS
+
+def get_time_delay(update: Update, context: CallbackContext):
+    """Get the time delay between sending emails."""
+    try:
+        context.user_data['number_of_emails'] = int(update.message.text.strip())
+        update.message.reply_text("Please enter the time delay between sending emails (in seconds).")
+        return TIME_DELAY
+    except ValueError:
+        update.message.reply_text("Invalid number of emails. Please try again.")
+        return NUMBER_OF_EMAILS
+
+def send_emails(update: Update, context: CallbackContext):
+    """Send the emails as per user input."""
+    try:
+        time_delay = int(update.message.text.strip())
+        number_of_emails = context.user_data['number_of_emails']
+        subject = context.user_data['subject']
+        body = context.user_data['body']
+        recipients = context.user_data['recipients'].split(',') if context.user_data['recipient_type'] == 'multiple' else [context.user_data['recipients']]
+
+        if len(recipients) == 0:
+            update.message.reply_text("No recipients provided. Operation cancelled.")
+            return ConversationHandler.END
+        
+        if number_of_emails > MAX_EMAILS_PER_SENDER:
+            update.message.reply_text(f"Cannot send more than {MAX_EMAILS_PER_SENDER} emails per session. Operation cancelled.")
+            return ConversationHandler.END
+
+        sender_index = 0
+        emails_sent = 0
+        
+        for recipient in recipients:
+            if emails_sent >= number_of_emails:
+                break
+            
+            sender = senders[sender_index]
+            try:
+                with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT, context=ssl.create_default_context()) as server:
+                    server.login(sender['sender_email'], sender['password'])
+                    message = f"Subject: {subject}\n\n{body}"
+                    server.sendmail(sender['sender_email'], recipient.strip(), message)
+                    track_email_stats(sender['sender_email'])
+                    
+                    update.message.reply_text(f"📧 Email sent to {recipient.strip()}!")
+                    emails_sent += 1
+                    time.sleep(time_delay)  # Wait before sending the next email
+
+                    # Move to the next sender if current sender reaches limit
+                    if email_stats[sender['sender_email']] >= MAX_EMAILS_PER_SENDER:
+                        sender_index = (sender_index + 1) % len(senders)
+                        email_stats[senders[sender_index]['sender_email']] = 0  # Reset count for next sender
+
+                update.message.reply_text(f"👾 All emails sent successfully!")
+            except Exception as e:
+                update.message.reply_text(f"❌ Failed to send email to {recipient.strip()}. Error: {e}")
+    
+    except ValueError:
+        update.message.reply_text("❌ Invalid time delay. Please try again.")
+    
+    return ConversationHandler.END
+
+def cancel(update: Update, context: CallbackContext):
+    """Handle the cancellation of the conversation."""
+    update.message.reply_text("❌ Operation cancelled.")
+    return ConversationHandler.END
 
 def main():
-    """Main function to set up the bot handlers and start the bot."""
-    updater = Updater(TELEGRAM_BOT_TOKEN, use_context=True)
-    dispatcher = updater.dispatcher
+    """Start the bot and set up handlers."""
+    updater = Updater(TELEGRAM_BOT_TOKEN)
+    dp = updater.dispatcher
 
-    # Define the conversation handler for sending emails
+    # Command handlers
+    dp.add_handler(CommandHandler('start', start))
+    dp.add_handler(CommandHandler('help', help_command))
+    dp.add_handler(CommandHandler('stats', stats_command))
+
+    # Callback query handler for stats
+    dp.add_handler(CallbackQueryHandler(show_stats, pattern='^stats_'))
+
+    # Conversation handler for email sending
     conv_handler = ConversationHandler(
-        entry_points=[CommandHandler('start', start)],
+        entry_points=[CommandHandler('sendemail', select_recipient_type)],
         states={
-            PASSWORD: [MessageHandler(Filters.text & ~Filters.command, display_stats)],
-            RECIPIENT_TYPE: [CallbackQueryHandler(select_recipient_type)],
-            # Define other states to handle email sending inputs
+            RECIPIENT_TYPE: [CallbackQueryHandler(get_recipient)],
+            RECIPIENT: [MessageHandler(Filters.text & ~Filters.command, get_subject)],
+            SUBJECT: [MessageHandler(Filters.text & ~Filters.command, get_body)],
+            BODY: [MessageHandler(Filters.text & ~Filters.command, get_number_of_emails)],
+            NUMBER_OF_EMAILS: [MessageHandler(Filters.text & ~Filters.command, get_time_delay)],
+            TIME_DELAY: [MessageHandler(Filters.text & ~Filters.command, send_emails)],
         },
-        fallbacks=[CommandHandler('cancel', lambda update, context: update.message.reply_text('Operation cancelled.'))],
+        fallbacks=[CommandHandler('cancel', cancel)],
     )
+    dp.add_handler(conv_handler)
 
-    # Add command handlers
-    dispatcher.add_handler(conv_handler)
-    dispatcher.add_handler(CommandHandler('help', help_command))
-    dispatcher.add_handler(CommandHandler('stats', stats_command))
-    dispatcher.add_handler(CallbackQueryHandler(show_stats, pattern='^stats_'))
+    # Error handler
+    dp.add_error_handler(lambda update, context: print(f"Update {update} caused error {context.error}"))
 
-    # Start the bot
+    # Start polling
     updater.start_polling()
     updater.idle()
 
