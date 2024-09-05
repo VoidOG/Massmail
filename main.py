@@ -2,7 +2,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import time
-from telegram import Update
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackContext
 import random
 
@@ -11,10 +11,10 @@ TELEGRAM_BOT_TOKEN = '7440411032:AAH7OU28kZNyID37DZsXWeKFGSJxba6yOjU'
 
 # Define authorized users and their passwords
 authorized_users = {
-    6663845789: '911',   # User ID 1 with Password 1
-    6551446148: '911',   # User ID 2 with Password 2
-    6698364560: '6969',  # User ID 3 with Password 3
-    1110013191: '1111'   # User ID 4 with Password 4
+    6663845789: '911',      # User ID 1 with Password 1
+    6551446148: '911',      # User ID 2 with Password 2
+    6698364560: '6969',     # User ID 3 with Password 3
+    1110013191: '9999'      # Updated User ID 4 with Password 4
 }
 
 # List of sender email configurations (Gmail SMTP server details, email, and password)
@@ -60,44 +60,62 @@ def send_email(recipient, sender_email, sender_password, smtp_server, port, subj
         return False  # Return False if the email fails to send
 
 def start(update: Update, context: CallbackContext):
-    """Start the conversation and send a welcome message."""
-    update.message.reply_text(
-        "Welcome to the Bulk Email Sender Bot!\n\n"
-        "I'm here to help you send bulk emails easily and efficiently.\n"
-        "Developed by Cenzo (@Cenzeo), this bot allows you to send emails using multiple sender accounts.\n"
-        "To get started, please enter your password."
+    """Start the conversation and send a welcome message with a button."""
+    keyboard = [
+        [InlineKeyboardButton("Developer", url="https://t.me/Cenzeo")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    
+    welcome_message = (
+        "🚀 **Welcome to Mass Mail** 🚀\n\n"
+        "The ultimate bulk email tool designed for those who think big. "
+        "Here, you wield the power to send emails at scale with precision and control.\n\n"
+        "Created by the OG, Cenzo, for those who refuse to settle.\n\n"
+        "⚙️ Let’s get to work, soldier. Time to make an impact. ⚙️"
     )
+
+    update.message.reply_text(welcome_message, reply_markup=reply_markup)
     return PASSWORD
 
 def check_password(update: Update, context: CallbackContext):
     """Check if the entered password is correct."""
     user_id = update.message.from_user.id
-    entered_password = update.message.text
+    entered_password = update.message.text.strip()  # Strip any whitespace from input
 
+    # Debug: Print the user ID and entered password for troubleshooting
+    print(f"Debug: User ID: {user_id}, Entered Password: {entered_password}")
+
+    # Check if the user ID and password match an entry in authorized_users
     if authorized_users.get(user_id) == entered_password:
         context.user_data['authenticated'] = True
-        update.message.reply_text('Authentication successful! Please provide the recipient email address.')
+        update.message.reply_text('🔒 Authentication successful! You’re in, soldier. 🔓\nNow drop that recipient email address and let’s get this mission rolling.')
         return RECIPIENT
     else:
-        update.message.reply_text('Incorrect password. Please try again or /cancel to stop.')
+        # If the user ID is found but the password doesn't match, inform about incorrect password
+        if user_id in authorized_users:
+            update.message.reply_text('🚫 Incorrect password. Try again or hit /cancel to back out.')
+        else:
+            # If the user ID itself is not recognized, inform the user
+            update.message.reply_text('⛔ Access denied. You’re not authorized to use this bot.')
+        
         return PASSWORD
 
 def get_recipient(update: Update, context: CallbackContext):
     """Store the recipient email and ask for the subject."""
     context.user_data['recipient'] = update.message.text
-    update.message.reply_text('Got it. Now, please provide the subject of the email.')
+    update.message.reply_text('📧 Got it. Now, hit me with the subject of the email.')
     return SUBJECT
 
 def get_subject(update: Update, context: CallbackContext):
     """Store the subject and ask for the body."""
     context.user_data['subject'] = update.message.text
-    update.message.reply_text('Subject noted. Now, please provide the body of the email.')
+    update.message.reply_text('📝 Subject locked and loaded. Now, drop the body of the email.')
     return BODY
 
 def get_body(update: Update, context: CallbackContext):
     """Store the body and ask for the number of emails."""
     context.user_data['body'] = update.message.text
-    update.message.reply_text('Body received. How many emails would you like to send? (Max 50)')
+    update.message.reply_text('✍️ Body received. How many emails are we firing off today? (Max 50)')
     return NUMBER_OF_EMAILS
 
 def get_number_of_emails(update: Update, context: CallbackContext):
@@ -105,14 +123,14 @@ def get_number_of_emails(update: Update, context: CallbackContext):
     try:
         number_of_emails = int(update.message.text)
         if number_of_emails > MAX_EMAILS_PER_SESSION:
-            update.message.reply_text(f'You have requested {number_of_emails} emails. The maximum allowed per session is {MAX_EMAILS_PER_SESSION}. Setting to 50.')
+            update.message.reply_text(f'⚠️ You’ve requested {number_of_emails} emails. The max cap is {MAX_EMAILS_PER_SESSION}. Setting to 50.')
             number_of_emails = MAX_EMAILS_PER_SESSION
         
         context.user_data['number_of_emails'] = number_of_emails
-        update.message.reply_text('Number of emails noted. Please provide the time delay (in seconds) between each email.')
+        update.message.reply_text('📊 Number of emails locked in. Now, set the time delay (in seconds) between each email.')
         return TIME_DELAY
     except ValueError:
-        update.message.reply_text('Invalid number of emails. Please provide a valid number.')
+        update.message.reply_text('❌ Invalid number. Let’s try that again, champ.')
         return NUMBER_OF_EMAILS
 
 def get_time_delay(update: Update, context: CallbackContext):
@@ -140,19 +158,19 @@ def get_time_delay(update: Update, context: CallbackContext):
                 body=body
             ):
                 count += 1
-                update.message.reply_text(f"{count} email{'s' if count > 1 else ''} sent")
+                update.message.reply_text(f"✅ {count} email{'s' if count > 1 else ''} sent. Keep going, we’re just getting started.")
 
             time.sleep(time_delay)
 
-        update.message.reply_text("All emails have been sent.")
+        update.message.reply_text("🎯 Mission accomplished. All emails have been sent. Good work.")
         return ConversationHandler.END
     except ValueError:
-        update.message.reply_text('Invalid time delay. Please provide a valid number.')
+        update.message.reply_text('❌ Invalid time delay. Try again, soldier.')
         return TIME_DELAY
 
 def cancel(update: Update, context: CallbackContext):
     """Cancel the conversation."""
-    update.message.reply_text('Conversation canceled.')
+    update.message.reply_text('❌ Operation aborted. Until next time.')
     return ConversationHandler.END
 
 def main():
