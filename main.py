@@ -20,7 +20,7 @@ senders = [
     {
         "smtp_server": "smtp.gmail.com",
         "port": 465,
-        "sender_email": "imvoid1003@gmail.com",
+        "sender_email": "imvoid1001@gmail.com",
         "sender_password": "mjmkalzfveddvkmr"
     },
     # Add more sender configurations as needed
