@@ -18,6 +18,7 @@ email_senders = {
     "massacres1001@gmail.com": "vjkfmjnsiiajkbzh"
 }
 user_stats = {}
+AUTHORIZED_USERS = {6663845789, 6551446148, 6698364560, 1110013191}  # Add authorized user IDs here
 
 # Define states for ConversationHandler
 CHOOSING, TYPING_REPLY = range(2)
@@ -48,6 +49,11 @@ def send_email(recipient, subject, body):
 
 # Command handlers
 def start(update: Update, context: CallbackContext) -> int:
+    user_id = update.message.from_user.id
+    if user_id not in AUTHORIZED_USERS:
+        update.message.reply_text("Unauthorized access.")
+        return ConversationHandler.END
+
     keyboard = [
         [InlineKeyboardButton("Developer", url="https://t.me/Cenzeo")],
         [InlineKeyboardButton("Channel", url="https://t.me/themassacres")]
@@ -66,6 +72,11 @@ def start(update: Update, context: CallbackContext) -> int:
     return CHOOSING
 
 def help_command(update: Update, context: CallbackContext) -> None:
+    user_id = update.message.from_user.id
+    if user_id not in AUTHORIZED_USERS:
+        update.message.reply_text("Unauthorized access.")
+        return
+
     help_message = (
         "🛠️ **Help Menu**\n\n"
         "1. **/start** - Start the bot and get a welcome message.\n"
@@ -81,6 +92,11 @@ def cancel(update: Update, context: CallbackContext) -> int:
     return ConversationHandler.END
 
 def send_email_handler(update: Update, context: CallbackContext) -> int:
+    user_id = update.message.from_user.id
+    if user_id not in AUTHORIZED_USERS:
+        update.message.reply_text("Unauthorized access.")
+        return ConversationHandler.END
+
     keyboard = [
         [InlineKeyboardButton("Single Recipient", callback_data='single')],
         [InlineKeyboardButton("Multiple Recipients", callback_data='multiple')]
@@ -90,6 +106,11 @@ def send_email_handler(update: Update, context: CallbackContext) -> int:
     return CHOOSING
 
 def handle_choice(update: Update, context: CallbackContext) -> int:
+    user_id = update.callback_query.from_user.id
+    if user_id not in AUTHORIZED_USERS:
+        update.callback_query.answer(text="Unauthorized access.")
+        return ConversationHandler.END
+
     query = update.callback_query
     query.answer()
 
@@ -101,18 +122,32 @@ def handle_choice(update: Update, context: CallbackContext) -> int:
         return TYPING_REPLY
 
 def receive_recipient_email(update: Update, context: CallbackContext) -> int:
-    user = update.message.from_user.id
+    user_id = update.message.from_user.id
+    if user_id not in AUTHORIZED_USERS:
+        update.message.reply_text("Unauthorized access.")
+        return ConversationHandler.END
+
     recipient = update.message.text
     context.user_data['recipient'] = recipient
     update.message.reply_text("Enter the subject of the email:")
     return TYPING_REPLY
 
 def receive_subject(update: Update, context: CallbackContext) -> int:
+    user_id = update.message.from_user.id
+    if user_id not in AUTHORIZED_USERS:
+        update.message.reply_text("Unauthorized access.")
+        return ConversationHandler.END
+
     context.user_data['subject'] = update.message.text
     update.message.reply_text("Enter the body of the email:")
     return TYPING_REPLY
 
 def receive_body(update: Update, context: CallbackContext) -> int:
+    user_id = update.message.from_user.id
+    if user_id not in AUTHORIZED_USERS:
+        update.message.reply_text("Unauthorized access.")
+        return ConversationHandler.END
+
     recipient = context.user_data.get('recipient')
     subject = context.user_data.get('subject')
     body = update.message.text
@@ -130,8 +165,12 @@ def receive_body(update: Update, context: CallbackContext) -> int:
 
 def stats(update: Update, context: CallbackContext) -> None:
     user_id = update.message.from_user.id
-    if user_id in user_stats:
-        today_stats, weekly_stats, overall_stats = user_stats[user_id]
+    if user_id not in AUTHORIZED_USERS:
+        update.message.reply_text("Unauthorized access.")
+        return
+
+    if '911' in context.args:
+        today_stats, weekly_stats, overall_stats = get_stats()
         update.message.reply_text(
             f"📊 **Email Stats**\n\n"
             f"**Today's Emails:** {today_stats}\n"
@@ -139,7 +178,14 @@ def stats(update: Update, context: CallbackContext) -> None:
             f"**Overall Emails:** {overall_stats}\n"
         )
     else:
-        update.message.reply_text('No stats available for this user.')
+        update.message.reply_text("You need to provide the passcode to view stats.")
+
+def get_stats():
+    # Dummy function to simulate fetching stats
+    today_stats = 10
+    weekly_stats = 50
+    overall_stats = 500
+    return today_stats, weekly_stats, overall_stats
 
 def main() -> None:
     # Initialize the bot with your token
