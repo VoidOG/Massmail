@@ -70,8 +70,12 @@ def fetch_stats(period):
     conn.close()
     return count, sender_counts
 
+# Thread lock for email counter
+email_counter_lock = threading.Lock()
+
 # Email sending function
 def send_email(recipient, subject, body):
+    global email_counter
     try:
         smtp_server = "smtp.gmail.com"
         smtp_port = 465
@@ -89,6 +93,10 @@ def send_email(recipient, subject, body):
 
                 logger.info(f"💥 Email sent successfully from {email}")
                 log_email(email, recipient, subject, body)
+                
+                with email_counter_lock:
+                    email_counter += 1
+                    print(f"ᴇᴍᴀɪʟ sᴇɴᴛ sᴜᴄᴄᴇssғᴜʟʟʏ ✅ ᴄᴏᴜɴᴛ: {email_counter}")
                 break
             except Exception as e:
                 logger.error(f"🔥 Error sending email from {email}: {e}")
@@ -123,147 +131,86 @@ def start(update: Update, context: CallbackContext) -> int:
     return ConversationHandler.END
 
 def help_command(update: Update, context: CallbackContext) -> None:
-    help_message = (
-        " ** 🛠️ Mᴀss Mᴀɪʟ Cᴏᴍᴍᴀɴᴅ Lɪsᴛ**\n\n"
-        " **⚡️ /start** - Sᴜᴍᴍᴏɴ ᴛʜᴇ ʙᴏᴛ ᴀɴᴅ ɢᴇᴛ sᴛᴀʀᴛᴇᴅ.\n"
-        " **⚡️ /send** - Exᴇᴄᴜᴛᴇ ʏᴏᴜʀ ᴇᴍᴀɪʟ ᴍɪssɪᴏɴ. ᴛʜᴇ ʙᴏᴛ ɢᴜɪᴅᴇs ʏᴏᴜ sᴛᴇᴘ-ʙʏ-sᴛᴇᴘ.\n"
-        " **⚡️ /cancel** - Aʙᴏʀᴛ ᴀɴʏ ᴏɴɢᴏɪɴɢ ᴏᴘᴇʀᴀᴛɪᴏɴ. Dᴏɴ'ᴛ ᴡᴀsᴛᴇ ᴛɪᴍᴇ.\n"
-        " **⚡️ /stats** - Sᴇᴄʀᴇᴛ ᴄᴏᴍᴍᴀɴᴅ. Rᴇvᴇᴀʟs ᴛʜᴇ ʙᴏᴛ's ɢʟᴏʙᴀʟ sᴛᴀᴛs. (Pᴀssᴄᴏᴅᴇ nᴇᴇᴅᴇᴅ)\n\n"
-        " **🔍 Fᴏʀ mᴏʀᴇ, ᴛᴀᴘ ᴛʜᴇ dᴇᴠᴇʟᴏᴘᴇʀ ʟɪɴᴋ ʙᴇʟᴏᴡ. Wᴇʟᴄᴏᴍᴇ ᴛᴏ ᴛʜᴇ ɪɴɴᴇʀ ᴄɪʀᴄʟᴇ.**"
+    help_text = (
+        "**🆘 Hᴇʟᴘ**\n\n"
+        "ɢᴜɪᴅᴇ ᴏɴ ʜᴏᴡ ᴛᴏ ᴜsᴇ ᴛʜᴇ ʙᴏᴛ:\n\n"
+        "**1. /send** - ᴄᴏᴍᴍᴀɴᴅ ᴛᴏ sᴇɴᴅ ᴀɴ ᴇᴍᴀɪʟ. ʏᴏᴜ'ʟʟ ʙᴇ ᴀsᴋᴇᴅ ᴛᴏ ᴘʀᴏᴠɪᴅᴇ ʀᴇᴄɪᴘɪᴇɴᴛ, sᴜʙᴊᴇᴄᴛ, ᴀɴᴅ ʙᴏᴅʏ.\n"
+        "**2. /help** - ᴅɪsᴘʟᴀʏs ᴛʜᴇsᴇ ʜᴇʟᴘ ᴏᴘᴛɪᴏɴs.\n"
+        "**3. /cancel** - ᴀʙᴏʀᴛs ᴛʜᴇ ᴄᴜʀʀᴇɴᴛ ᴏᴘᴇʀᴀᴛɪᴏɴ.\n\n"
+        "Fᴏʀ ᴀɴʏ ɪssᴜᴇs, ᴘʟᴇᴀsᴇ ᴄᴏɴᴛᴀᴄᴛ [sᴜᴘᴘᴏʀᴛ](https://t.me/Cenzeo)."
     )
-    update.message.reply_text(help_message, parse_mode=ParseMode.MARKDOWN)
+    update.message.reply_text(help_text, parse_mode=ParseMode.MARKDOWN)
 
 def cancel(update: Update, context: CallbackContext) -> int:
-    update.message.reply_text('❌ Mɪssɪᴏɴ ᴀʙᴏʀᴛᴇᴅ. Sᴛᴀɴᴅɪɴɢ ᴅᴏᴡɴ.')
-    return ConversationHandler.END
-
-def send_email_handler(update: Update, context: CallbackContext) -> int:
     user_id = update.message.from_user.id
     if user_id not in AUTHORIZED_USERS:
-        update.message.reply_text("🚫 Uɴᴀᴜᴛʜᴏʀɪᴢᴇᴅ. Aᴄᴄᴇss ᴅᴇɴɪᴇᴅ.")
+        update.message.reply_text("🚫 Uɴᴀᴜᴛʜᴏʀɪᴢᴇᴅ ᴀᴄᴄᴇss. Tʜɪs ʀᴇᴀʟᴍ ɪs ɴᴏᴛ ғᴏʀ ʏᴏᴜ.")
         return ConversationHandler.END
 
-    keyboard = [
-        [InlineKeyboardButton("🎯 Sɪɴɢʟᴇ Rᴇᴄɪᴘɪᴇɴᴛ", callback_data='single')],
-        [InlineKeyboardButton("💣 Mᴜʟᴛɪᴘʟᴇ Rᴇᴄɪᴘɪᴇɴᴛs", callback_data='multiple')]
-    ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text('🔥 Cʜᴏᴏsᴇ ʏᴏᴜʀ ᴛᴀʀɢᴇᴛ ᴍᴏᴅᴇ:', reply_markup=reply_markup)
-    return CHOOSE_MODE
+    update.message.reply_text("❌ Cᴀɴᴄᴇʟʟᴇᴅ. ʜᴀᴠᴇ ᴀ ɴɪᴄᴇ ᴅᴀʏ!")
+    return ConversationHandler.END
 
-def handle_choice(update: Update, context: CallbackContext) -> int:
-    query = update.callback_query
-    user_id = query.from_user.id
+def send(update: Update, context: CallbackContext) -> int:
+    user_id = update.message.from_user.id
     if user_id not in AUTHORIZED_USERS:
-        query.answer(text="🚫 Uɴᴀᴜᴛʜᴏʀɪᴢᴇᴅ ᴀᴄᴄᴇss.")
+        update.message.reply_text("🚫 Uɴᴀᴜᴛʜᴏʀɪᴢᴇᴅ ᴀᴄᴄᴇss. Tʜɪs ʀᴇᴀʟᴍ ɪs ɴᴏᴛ ғᴏʀ ʏᴏᴜ.")
         return ConversationHandler.END
 
-    query.answer()
+    update.message.reply_text("✉️ Pʟᴇᴀsᴇ ᴘʀᴏᴠɪᴅᴇ ᴛʜᴇ ʀᴇᴄɪᴘɪᴇɴᴛ ᴇᴍᴀɪʟ ᴀᴅᴅʀᴇss.")
+    return GET_RECIPIENT
 
-    if query.data == 'single':
-        query.edit_message_text(text="🎯 Yᴏᴜ sᴇʟᴇᴄᴛᴇᴅ Sɪɴɢʟᴇ Rᴇᴄɪᴘɪᴇɴᴛ. Eɴᴛᴇʀ ᴛʜᴇ ʀᴇᴄɪᴘɪᴇɴᴛ's ᴇᴍᴀɪʟ.")
-        return GET_RECIPIENT
-    elif query.data == 'multiple':
-        query.edit_message_text(text="💣 Yᴏᴜ sᴇʟᴇᴄᴛᴇᴅ Mᴜʟᴛɪᴘʟᴇ Rᴇᴄɪᴘɪᴇɴᴛs. Uᴘʟᴏᴀᴅ ᴀ CSV ғɪʟᴇ wɪᴛʜ ʀᴇᴄɪᴘɪᴇɴᴛ ᴇᴍᴀɪʟs.")
-        return GET_RECIPIENT
-
-def receive_recipient_email(update: Update, context: CallbackContext) -> int:
-    recipient = update.message.text
-    context.user_data['recipient'] = recipient
-    update.message.reply_text("📜 Eɴᴛᴇʀ ᴛʜᴇ sᴜʙᴊᴇᴄᴛ ᴏғ ʏᴏᴜʀ ᴇᴍᴀɪʟ:")
+def get_recipient(update: Update, context: CallbackContext) -> int:
+    context.user_data['recipient'] = update.message.text
+    update.message.reply_text("📧 Nᴇxᴛ, ᴘʟᴇᴀsᴇ ᴘʀᴏᴠɪᴅᴇ ᴛʜᴇ sᴜʙᴊᴇᴄᴛ ᴏғ ʏᴏᴜʀ ᴇᴍᴀɪʟ.")
     return GET_SUBJECT
 
-def receive_subject(update: Update, context: CallbackContext) -> int:
-    subject = update.message.text
-    context.user_data['subject'] = subject
-    update.message.reply_text("✍️ Nᴏᴡ, ᴛʏᴘᴇ ᴏᴜᴛ ᴛʜᴇ ʙᴏᴅʏ ᴏғ ᴛʜᴇ ᴇᴍᴀɪʟ:")
+def get_subject(update: Update, context: CallbackContext) -> int:
+    context.user_data['subject'] = update.message.text
+    update.message.reply_text("📝 Fɪɴᴀʟʟʏ, ᴘʟᴇᴀsᴇ ᴘʀᴏᴠɪᴅᴇ ᴛʜᴇ ʙᴏᴅʏ ᴏғ ʏᴏᴜʀ ᴇᴍᴀɪʟ.")
     return GET_BODY
 
-def receive_body(update: Update, context: CallbackContext) -> int:
-    recipient = context.user_data.get('recipient')
-    subject = context.user_data.get('subject')
+def get_body(update: Update, context: CallbackContext) -> int:
+    recipient = context.user_data['recipient']
+    subject = context.user_data['subject']
     body = update.message.text
 
-    update.message.reply_text('⚙️ Sᴇɴᴅɪɴɢ ʏᴏᴜʀ ᴍᴇssᴀɢᴇ ɪɴᴛᴏ ᴛʜᴇ ᴠᴏɪᴅ...')
-    threading.Thread(target=send_email, args=(recipient, subject, body)).start()
+    global email_counter
+    if email_counter >= MAX_EMAILS_PER_DAY:
+        update.message.reply_text(f"⚠️ Maximum daily limit of {MAX_EMAILS_PER_DAY} emails reached. Please try again tomorrow.")
+        return ConversationHandler.END
 
-    update.message.reply_text('✅ ᴇᴍᴀɪʟ sᴇɴᴛ. Mɪssɪᴏɴ ᴄᴏᴍᴘʟᴇᴛᴇ.')
+    # Start a new thread for sending the email
+    threading.Thread(target=send_email, args=(recipient, subject, body)).start()
+    
+    update.message.reply_text(f"✅ Email to {recipient} with subject '{subject}' has been queued for sending.")
     return ConversationHandler.END
 
-def stats(update: Update, context: CallbackContext) -> None:
-    user_id = update.message.from_user.id
-    if user_id not in AUTHORIZED_USERS:
-        update.message.reply_text("🚫 Uɴᴀᴜᴛʜᴏʀɪᴢᴇᴅ. Rᴇsᴛʀɪᴄᴛᴇᴅ ᴀʀᴇᴀ.")
-        return
-
-    if '911' in context.args:
-        keyboard = [
-            [InlineKeyboardButton("🕛 Tᴏᴅᴀʏ", callback_data='today')],
-            [InlineKeyboardButton("📅 Wᴇᴇᴋʟʏ", callback_data='week')],
-            [InlineKeyboardButton("📊 Oᴠᴇʀᴀʟʟ", callback_data='overall')]
-        ]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        update.message.reply_text("**📊 Cʜᴏᴏsᴇ sᴛᴀᴛs ᴛᴏ ᴠɪᴇᴡ:**", reply_markup=reply_markup)
-    else:
-        update.message.reply_text("🛑 Pᴀssᴄᴏᴅᴇ ʀᴇQᴜɪʀᴇᴅ ᴛᴏ ᴠɪᴇᴡ ᴛʜᴇ sᴛᴀᴛs. Sᴛᴀʏ ɪɴ ᴛʜᴇ ʟᴏᴏᴘ.")
-
-def display_stats(update: Update, context: CallbackContext) -> None:
-    query = update.callback_query
-    period = query.data
-
-    count, sender_counts = fetch_stats(period)
-    stats_message = f"**📊 Eᴍᴀɪʟ Sᴛᴀᴛs ({period.capitalize()}):**\n\n"
-    stats_message += f"**📨 Tᴏᴛᴀʟ ᴇᴍᴀɪʟs Sᴇɴᴛ:** {count}\n\n"
-    
-    if sender_counts:
-        stats_message += "**📝 Dᴇᴛᴀɪʟᴇᴅ Bʀᴇᴀᴋᴅᴏᴡɴ ʙʏ Sᴇɴᴅᴇʀ:**\n"
-        for sender, sent_count in sender_counts:
-            stats_message += f"• **{sender}**: {sent_count} emails\n"
-    else:
-        stats_message += "⚠️ Nᴏ ᴇᴍᴀɪʟs sᴇɴᴛ ᴅᴜʀɪɴɢ ᴛʜɪs ᴘᴇʀɪᴏᴅ.\n"
-
-    stats_message += "\n🚀 Sᴛᴀʏ sʜᴀʀᴘ, sᴛᴀʏ ʟᴇᴛʜᴀʟ."
-
-    query.edit_message_text(text=stats_message, parse_mode=ParseMode.MARKDOWN)
-
-def error(update: Update, context: CallbackContext) -> None:
-    """Log Errors caused by Updates."""
-    logger.warning(f"⚠️ Update {update} caused error {context.error}")
-
 def main() -> None:
-    setup_database()  # Initialize the database for logging stats
+    setup_database()
 
-    # Insert your bot token here
-    updater = Updater("6795292888:AAGPvq5pOqoGIHXUpLrRv2EKytK_0gAIli4", use_context=True)
-    dp = updater.dispatcher
+    # Initialize the Updater and pass it your bot's token.
+    updater = Updater("6795292888:AAGPvq5pOqoGIHXUpLrRv2EKytK_0gAIli4")
 
-    # Command handlers
-    dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(CommandHandler("help", help_command))
-    dp.add_handler(CommandHandler("cancel", cancel))
-    dp.add_handler(CommandHandler("stats", stats, pass_args=True))
+    dispatcher = updater.dispatcher
 
-    # Conversation handler for email sending
+    # Add command and message handlers
+    dispatcher.add_handler(CommandHandler("start", start))
+    dispatcher.add_handler(CommandHandler("help", help_command))
+    dispatcher.add_handler(CommandHandler("cancel", cancel))
+    dispatcher.add_handler(CommandHandler("send", send))
+
     conv_handler = ConversationHandler(
-        entry_points=[CommandHandler("send", send_email_handler)],
+        entry_points=[CommandHandler('send', send)],
         states={
-            CHOOSE_MODE: [CallbackQueryHandler(handle_choice)],
-            GET_RECIPIENT: [MessageHandler(Filters.text & ~Filters.command, receive_recipient_email)],
-            GET_SUBJECT: [MessageHandler(Filters.text & ~Filters.command, receive_subject)],
-            GET_BODY: [MessageHandler(Filters.text & ~Filters.command, receive_body)],
+            GET_RECIPIENT: [MessageHandler(Filters.text & ~Filters.command, get_recipient)],
+            GET_SUBJECT: [MessageHandler(Filters.text & ~Filters.command, get_subject)],
+            GET_BODY: [MessageHandler(Filters.text & ~Filters.command, get_body)],
         },
-        fallbacks=[CommandHandler("cancel", cancel)],
+        fallbacks=[CommandHandler('cancel', cancel)]
     )
+    dispatcher.add_handler(conv_handler)
 
-    dp.add_handler(conv_handler)
-
-    # Callback query handler for stats buttons
-    dp.add_handler(CallbackQueryHandler(display_stats, pattern='^today$|^week$|^overall$'))
-
-    # Log all errors
-    dp.add_error_handler(error)
-
-    # Start the bot
+    # Start the Bot
     updater.start_polling()
     updater.idle()
 
