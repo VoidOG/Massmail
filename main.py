@@ -18,7 +18,7 @@ senders = [
     {"email": "massacres1001@gmail.com", "password": "vjkfmjnsiiajkbzh"},
     {"email": "usaa45600@gmail.com", "password": "bwgdiqehvemfitjx"},
     {"email": "lolwhosucks@gmail.com", "password": "rssrsfmnpmzjtcxl"},
-    {"email": "", "password": "urpcznlkyazksbsr"}
+    {"email": "Yourmomsucksmine69@gmail.com", "password": "urpcznlkyazksbsr"}
 ]
 
 # SMTP server details
