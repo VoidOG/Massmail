@@ -7,7 +7,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Conve
 import random
 
 # Replace with your Telegram bot token
-TELEGRAM_BOT_TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN'
+TELEGRAM_BOT_TOKEN = '6795292888:AAGPvq5pOqoGIHXUpLrRv2EKytK_0gAIli4'
 
 # Define authorized users by their User IDs
 authorized_users = [6663845789, 6551446148, 6698364560, 1110013191]
@@ -15,7 +15,10 @@ authorized_users = [6663845789, 6551446148, 6698364560, 1110013191]
 # Define sender emails and passwords
 senders = [
     {"email": "imvoid1001@gmail.com", "password": "mjmkalzfveddvkmr"},
-    {"email": "massacres1001@gmail.com", "password": "vjkfmjnsiiajkbzh"}
+    {"email": "massacres1001@gmail.com", "password": "vjkfmjnsiiajkbzh"},
+    {"email": "usaa45600@gmail.com", "password": "bwgdiqehvemfitjx"},
+    {"email": "lolwhosucks@gmail.com", "password": "rssrsfmnpmzjtcxl"},
+    {"email": "", "password": "urpcznlkyazksbsr"}
 ]
 
 # SMTP server details
@@ -69,10 +72,10 @@ def start(update: Update, context: CallbackContext):
 
     # Welcome message with OG vibe
     welcome_message = (
-        "🚀 **ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴍᴀss ᴍᴀɪʟ** 🚀\n\n"
+        "**👾 ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴍᴀss ᴍᴀɪʟ 👾 **\n\n"
         "ᴛʜᴇ ᴜʟᴛɪᴍᴀᴛᴇ ʙᴜʟᴋ ᴇᴍᴀɪʟ ᴛᴏᴏʟ ᴅᴇsɪɢɴᴇᴅ ғᴏʀ ᴛʜᴏsᴇ ᴡʜᴏ ᴛʜɪɴᴋ ʙɪɢ. "
         "ʜᴇʀᴇ, ʏᴏᴜ ᴡɪᴇʟᴅ ᴛʜᴇ ᴘᴏᴡᴇʀ ᴛᴏ sᴇɴᴅ ᴇᴍᴀɪʟs ᴀᴛ sᴄᴀʟᴇ ᴡɪᴛʜ ᴘʀᴇᴄɪsɪᴏɴ ᴀɴᴅ ᴄᴏɴᴛʀᴏʟ.\n\n"
-        "ᴄʀᴇᴀᴛᴇᴅ ʙʏ ᴛʜᴇ ᴏɢ, ᴄᴇɴᴢᴏ, ғᴏʀ ᴛʜᴏsᴇ ᴡʜᴏ ʀᴇғᴜsᴇ ᴛᴏ sᴇᴛᴛʟᴇ.\n\n"
+        "ᴄʀᴇᴀᴛᴇᴅ ʙʏ ᴛʜᴇ ᴄᴇɴᴢᴏ, ғᴏʀ ᴛʜᴏsᴇ ᴡʜᴏ ʀᴇғᴜsᴇ ᴛᴏ sᴇᴛᴛʟᴇ.\n\n"
         "⚙️ ʟᴇᴛ’s ɢᴇᴛ ᴛᴏ ᴡᴏʀᴋ, sᴏʟᴅɪᴇʀ. ᴛɪᴍᴇ ᴛᴏ ᴍᴀᴋᴇ ᴀɴ ɪᴍᴘᴀᴄᴛ. ⚙️"
     )
 
