@@ -70,7 +70,7 @@ def start(update: Update, context: CallbackContext):
     image_url = "https://telegra.ph/file/0b4853eb7a9d860f3e73b.jpg"
     context.bot.send_photo(chat_id=update.effective_chat.id, photo=image_url)
 
-    # Welcome message with OG vibe
+    # Welcome message
     welcome_message = (
         "**👾 ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴍᴀss ᴍᴀɪʟ 👾 **\n\n"
         "ᴛʜᴇ ᴜʟᴛɪᴍᴀᴛᴇ ʙᴜʟᴋ ᴇᴍᴀɪʟ ᴛᴏᴏʟ ᴅᴇsɪɢɴᴇᴅ ғᴏʀ ᴛʜᴏsᴇ ᴡʜᴏ ᴛʜɪɴᴋ ʙɪɢ. "
@@ -162,7 +162,7 @@ def get_time_delay(update: Update, context: CallbackContext):
                     update.message.reply_text("⛔ ᴅᴀɪʟʏ ᴇᴍᴀɪʟ ʟɪᴍɪᴛ ʀᴇᴀᴄʜᴇᴅ. ᴄᴏɴsɪᴅᴇʀ ʀᴇsᴜᴍɪɴɢ ᴛᴏᴍᴏʀʀᴏᴡ.")
                     break
 
-                update.message.reply_text(f"✅ {count} ᴇᴍᴀɪʟ{'s' ɪғ count > 1 ᴇʟsᴇ ''} sᴇɴᴛ. ᴋᴇᴇᴘ ɢᴏɪɴɢ, ᴡᴇ’ʀᴇ ᴊᴜsᴛ ɢᴇᴛᴛɪɴɢ sᴛᴀʀᴛᴇᴅ.")
+                update.message.reply_text(f"✅ {count} ᴇᴍᴀɪʟ{'s' if count > 1 else ''} sᴇɴᴛ. ᴋᴇᴇᴘ ɢᴏɪɴɢ, ᴡᴇ’ʀᴇ ᴊᴜsᴛ ɢᴇᴛᴛɪɴɢ sᴛᴀʀᴛᴇᴅ.")
 
             time.sleep(time_delay)
 
