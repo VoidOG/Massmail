@@ -12,12 +12,14 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 # Global variables
-MAX_EMAILS_PER_DAY = 80
+MAX_EMAILS_PER_DAY = 500
 email_counter = 0
 email_senders = {
     "imvoid1003@gmail.com": "mjmkalzfveddvkmr",
     "massacres1001@gmail.com": "vjkfmjnsiiajkbzh",
-    "usaa45600@gmail.com": "bwgdiqehvemfitjx"
+    "usaa45600@gmail.com": "bwgdiqehvemfitjx",
+    "lolwhosucks@gmail.com": "rssrsfmnpmzjtcxl",
+    "Yourmomsucksmine69@gmail.com": "urpcznlkyazksbsr"
 }
 AUTHORIZED_USERS = {6663845789, 6551446148, 6698364560, 1110013191}  # Add authorized user IDs here
 
