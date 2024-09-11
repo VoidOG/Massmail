@@ -1,3 +1,6 @@
+©Cenzo @Cenzeo
+# Mass Mail Bot Repository 
+# Only One in Telegram
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -18,7 +21,13 @@ senders = [
     {"email": "massacres1001@gmail.com", "password": "vjkfmjnsiiajkbzh"},
     {"email": "usaa45600@gmail.com", "password": "bwgdiqehvemfitjx"},
     {"email": "lolwhosucks@gmail.com", "password": "rssrsfmnpmzjtcxl"},
-    {"email": "Yourmomsucksmine69@gmail.com", "password": "urpcznlkyazksbsr"}
+    {"email": "Yourmomsucksmine69@gmail.com", "password": "urpcznlkyazksbsr"},
+    {"email": "", "password": ""},
+    {"email": "", "password": ""},
+    {"email": "", "password": ""},
+    {"email": "", "password": ""},
+    {"email": "", "password": ""},
+    {"email": "", "password": ""}
 ]
 
 # SMTP server details
@@ -59,6 +68,11 @@ def send_email(recipient, sender_email, sender_password, subject, body):
 
 def start(update: Update, context: CallbackContext):
     """Start the conversation and send a welcome message with buttons and an image."""
+    user_id = update.message.from_user.id
+    if user_id not in authorized_users:
+        update.message.reply_text('❌ ᴜɴᴀᴜᴛʜᴏʀɪᴢᴇᴅ ᴜsᴇʀ.')
+        return ConversationHandler.END
+
     # Keyboard buttons with links
     keyboard = [
         [InlineKeyboardButton("ᴅᴇᴠᴇʟᴏᴘᴇʀ", url="https://t.me/Cenzeo"),
@@ -74,10 +88,10 @@ def start(update: Update, context: CallbackContext):
     welcome_message = (
         "**👾 ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴍᴀss ᴍᴀɪʟ 👾 **\n\n"
         "ᴛʜᴇ ᴜʟᴛɪᴍᴀᴛᴇ ʙᴜʟᴋ ᴇᴍᴀɪʟ ᴛᴏᴏʟ ᴅᴇsɪɢɴᴇᴅ ғᴏʀ ᴛʜᴏsᴇ ᴡʜᴏ ᴛʜɪɴᴋ ʙɪɢ. "
-        "ʜᴇʀᴇ, ʏᴏᴜ ᴡɪᴇʟᴅ ᴛʜᴇ ᴘᴏᴡᴇʀ ᴛᴏ sᴇɴᴅ ᴇᴍᴀɪʟs ᴀᴛ sᴄᴀʟᴇ ᴡɪᴛʜ ᴘʀᴇᴄɪsɪᴏɴ ᴀɴᴅ ᴄᴏɴᴛʀᴏʟ.\n\n"
+        "ʜᴇʀᴇ, ʏᴏᴜ ᴡɪᴇʟᴅ ᴛᴇ ᴘᴏᴡᴇʀ ᴛᴏ sᴇɴᴅ ᴇᴍᴀɪʟs ᴀᴛ sᴄᴀʟᴇ ᴡɪᴛʜ ᴘʀᴇᴄɪsɪᴏɴ ᴀɴᴅ ᴄᴏɴᴛʀᴏʟ.\n\n"
         "ᴄʀᴇᴀᴛᴇᴅ ʙʏ ᴛʜᴇ ᴄᴇɴᴢᴏ, ғᴏʀ ᴛʜᴏsᴇ ᴡʜᴏ ʀᴇғᴜsᴇ ᴛᴏ sᴇᴛᴛʟᴇ.\n\n"
         "⚙️ ʟᴇᴛ’s ɢᴇᴛ ᴛᴏ ᴡᴏʀᴋ, sᴏʟᴅɪᴇʀ. ᴛɪᴍᴇ ᴛᴏ ᴍᴀᴋᴇ ᴀɴ ɪᴍᴘᴀᴄᴛ. ⚙️\n\n"
-        "ⓘᴅʀᴏᴘ ʏᴏᴜʀ ʀᴇᴄɪᴘɪᴇɴᴛꜱ ᴍᴀɪʟ ɪᴅ ᴀɴᴅ ᴡᴀᴛᴄʜ ɪᴛ ʙᴏᴍʙᴇᴅ ‼️""
+        "ⓘᴅʀᴏᴘ ʏᴏᴜʀ ʀᴇᴄɪᴘɪᴇɴᴛꜱ ᴍᴀɪʟ ɪᴅ ᴀɴᴅ ᴡᴀᴛᴄʜ ɪᴛ ʙᴏᴍʙᴇᴅ ‼️"
     )
 
     update.message.reply_text(welcome_message, reply_markup=reply_markup)
@@ -86,6 +100,11 @@ def start(update: Update, context: CallbackContext):
 
 def get_recipient(update: Update, context: CallbackContext):
     """Store the recipient email and ask for the subject."""
+    user_id = update.message.from_user.id
+    if user_id not in authorized_users:
+        update.message.reply_text('❌ ᴜɴᴀᴜᴛʜᴏʀɪᴢᴇᴅ ᴜsᴇʀ.')
+        return ConversationHandler.END
+
     context.user_data['recipient'] = update.message.text
     update.message.reply_text('📧 ɢᴏᴛ ɪᴛ. ɴᴏᴡ, ʜɪᴛ ᴍᴇ ᴡɪᴛʜ ᴛʜᴇ sᴜʙᴊᴇᴄᴛ ᴏғ ᴛʜᴇ ᴇᴍᴀɪʟ.')
     return SUBJECT
@@ -93,6 +112,11 @@ def get_recipient(update: Update, context: CallbackContext):
 
 def get_subject(update: Update, context: CallbackContext):
     """Store the subject and ask for the body."""
+    user_id = update.message.from_user.id
+    if user_id not in authorized_users:
+        update.message.reply_text('❌ ᴜɴᴀᴜᴛʜᴏʀɪᴢᴇᴅ ᴜsᴇʀ.')
+        return ConversationHandler.END
+
     context.user_data['subject'] = update.message.text
     update.message.reply_text('📝 sᴜʙᴊᴇᴄᴛ ʟᴏᴄᴋᴇᴅ ᴀɴᴅ ʟᴏᴀᴅᴇᴅ. ɴᴏᴡ, ᴅʀᴏᴘ ᴛʜᴇ ʙᴏᴅʏ ᴏғ ᴛʜᴇ ᴇᴍᴀɪʟ.')
     return BODY
@@ -100,6 +124,11 @@ def get_subject(update: Update, context: CallbackContext):
 
 def get_body(update: Update, context: CallbackContext):
     """Store the body and ask for the number of emails."""
+    user_id = update.message.from_user.id
+    if user_id not in authorized_users:
+        update.message.reply_text('❌ ᴜɴᴀᴜᴛʜᴏʀɪᴢᴇᴅ ᴜsᴇʀ.')
+        return ConversationHandler.END
+
     context.user_data['body'] = update.message.text
     update.message.reply_text(f'✍️ ʙᴏᴅʏ ʀᴇᴄᴇɪᴠᴇᴅ. ʜᴏᴡ ᴍᴀɴʏ ᴇᴍᴀɪʟs ᴀʀᴇ ᴡᴇ ғɪʀɪɴɢ ᴏғғ ᴛᴏᴅᴀʏ? (ᴍᴀx {MAX_EMAILS_PER_SESSION})')
     return NUMBER_OF_EMAILS
@@ -107,8 +136,12 @@ def get_body(update: Update, context: CallbackContext):
 
 def get_number_of_emails(update: Update, context: CallbackContext):
     """Store the number of emails and ask for the time delay."""
+    user_id = update.message.from_user.id
+    if user_id not in authorized_users:
+        update.message.reply_text('❌ ᴜɴᴀᴜᴛʜᴏʀɪᴢᴇᴅ ᴜsᴇʀ.')
+        return ConversationHandler.END
+
     try:
-        user_id = update.message.from_user.id
         number_of_emails = int(update.message.text)
 
         # Check the user's daily limit
@@ -119,7 +152,7 @@ def get_number_of_emails(update: Update, context: CallbackContext):
 
         # Check the session limit
         if number_of_emails > MAX_EMAILS_PER_SESSION:
-            update.message.reply_text(f'⚠️ ʏᴏᴜ’ve ʀᴇǫᴜᴇsᴛᴇᴅ {number_of_emails} ᴇᴍᴀɪʟs. ᴛʜᴇ ᴍᴀx ᴄᴀᴘ ᴘᴇʀ sᴇssɪᴏɴ ɪs {MAX_EMAILS_PER_SESSION}. sᴇᴛᴛɪɴɢ ᴛᴏ 50.')
+            update.message.reply_text(f'⚠️ ʏᴏᴜ’ve ʀᴇǫᴜᴇsᴛᴇᴅ {number_of_emails} ᴇᴍᴀɪʟs. ᴛʜᴇ ᴍᴀx ᴄᴀᴘ ᴘᴇʀ sᴇssɪᴏɴ ɪs {MAX_EMAILS_PER_SESSION}. sᴇᴛᴛɪɴɪɴɢ ᴛᴏ 50.')
             number_of_emails = MAX_EMAILS_PER_SESSION
 
         context.user_data['number_of_emails'] = number_of_emails
@@ -132,6 +165,11 @@ def get_number_of_emails(update: Update, context: CallbackContext):
 
 def get_time_delay(update: Update, context: CallbackContext):
     """Store the time delay and start sending the emails."""
+    user_id = update.message.from_user.id
+    if user_id not in authorized_users:
+        update.message.reply_text('❌ ᴜɴᴀᴜᴛʜᴏʀɪᴢᴇᴅ ᴜsᴇʀ.')
+        return ConversationHandler.END
+
     try:
         context.user_data['time_delay'] = float(update.message.text)
         recipient = context.user_data['recipient']
@@ -139,7 +177,6 @@ def get_time_delay(update: Update, context: CallbackContext):
         body = context.user_data['body']
         number_of_emails = context.user_data['number_of_emails']
         time_delay = context.user_data['time_delay']
-        user_id = update.message.from_user.id
 
         # Initialize the user's email count if not already set
         email_counters.setdefault(user_id, 0)
@@ -176,6 +213,11 @@ def get_time_delay(update: Update, context: CallbackContext):
 
 def cancel(update: Update, context: CallbackContext):
     """Cancel the conversation."""
+    user_id = update.message.from_user.id
+    if user_id not in authorized_users:
+        update.message.reply_text('❌ ᴜɴᴀᴜᴛʜᴏʀɪᴢᴇᴅ ᴜsᴇʀ.')
+        return ConversationHandler.END
+
     update.message.reply_text('❌ ᴏᴘᴇʀᴀᴛɪᴏɴ ᴀʙᴏʀᴛᴇᴅ. ᴜɴᴛɪʟ ɴᴇxᴛ ᴛɪᴍᴇ.')
     return ConversationHandler.END
 
