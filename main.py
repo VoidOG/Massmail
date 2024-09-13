@@ -1,4 +1,4 @@
-©Cenzo @Cenzeo
+# ©Cenzo @Cenzeo
 # Mass Mail Bot Repository 
 # Only One in Telegram
 import smtplib
