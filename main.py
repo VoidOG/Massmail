@@ -22,12 +22,9 @@ senders = [
     {"email": "usaa45600@gmail.com", "password": "bwgdiqehvemfitjx"},
     {"email": "lolwhosucks@gmail.com", "password": "rssrsfmnpmzjtcxl"},
     {"email": "Yourmomsucksmine69@gmail.com", "password": "urpcznlkyazksbsr"},
-    {"email": "", "password": ""},
-    {"email": "", "password": ""},
-    {"email": "", "password": ""},
-    {"email": "", "password": ""},
-    {"email": "", "password": ""},
-    {"email": "", "password": ""}
+    {"email": "unknowntikku@gmail.com", "password": "dffiufucyixcfzfq"},
+    {"email": "unknownsultan123@gmail.com", "password": "wetqhcxcvbtmmavc"},
+    {"email": "bhaisalmon6969@gmail.com", "password": "ducrkxtufoqemdbt"}
 ]
 
 # SMTP server details
@@ -36,7 +33,7 @@ SMTP_PORT = 465
 
 # Maximum emails allowed per session and per day
 MAX_EMAILS_PER_SESSION = 50
-MAX_EMAILS_PER_DAY = 500
+MAX_EMAILS_PER_DAY = 800
 
 # Email counters to track daily usage
 email_counters = {}
