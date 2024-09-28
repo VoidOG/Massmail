@@ -6,7 +6,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import time
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackContext
+from telegram.ext import Updater, CommandHandler, MessageHandler, filters, ConversationHandler, CallbackContext
 import random
 
 # Replace with your Telegram bot token
@@ -83,7 +83,7 @@ def start(update: Update, context: CallbackContext):
 
     # Welcome message
     welcome_message = (
-        "**👾 ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴍᴀss ᴍᴀɪʟ 👾 **\n\n"
+        " **👾 ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴍᴀss ᴍᴀɪʟ 👾** \n\n"
         "ᴛʜᴇ ᴜʟᴛɪᴍᴀᴛᴇ ʙᴜʟᴋ ᴇᴍᴀɪʟ ᴛᴏᴏʟ ᴅᴇsɪɢɴᴇᴅ ғᴏʀ ᴛʜᴏsᴇ ᴡʜᴏ ᴛʜɪɴᴋ ʙɪɢ. "
         "ʜᴇʀᴇ, ʏᴏᴜ ᴡɪᴇʟᴅ ᴛᴇ ᴘᴏᴡᴇʀ ᴛᴏ sᴇɴᴅ ᴇᴍᴀɪʟs ᴀᴛ sᴄᴀʟᴇ ᴡɪᴛʜ ᴘʀᴇᴄɪsɪᴏɴ ᴀɴᴅ ᴄᴏɴᴛʀᴏʟ.\n\n"
         "ᴄʀᴇᴀᴛᴇᴅ ʙʏ ᴛʜᴇ ᴄᴇɴᴢᴏ, ғᴏʀ ᴛʜᴏsᴇ ᴡʜᴏ ʀᴇғᴜsᴇ ᴛᴏ sᴇᴛᴛʟᴇ.\n\n"
@@ -228,11 +228,11 @@ def main():
     conversation_handler = ConversationHandler(
         entry_points=[CommandHandler('start', start)],
         states={
-            RECIPIENT: [MessageHandler(Filters.text & ~Filters.command, get_recipient)],
-            SUBJECT: [MessageHandler(Filters.text & ~Filters.command, get_subject)],
-            BODY: [MessageHandler(Filters.text & ~Filters.command, get_body)],
-            NUMBER_OF_EMAILS: [MessageHandler(Filters.text & ~Filters.command, get_number_of_emails)],
-            TIME_DELAY: [MessageHandler(Filters.text & ~Filters.command, get_time_delay)],
+            RECIPIENT: [MessageHandler(filters.text & ~filters.command, get_recipient)],
+            SUBJECT: [MessageHandler(filters.text & ~filters.command, get_subject)],
+            BODY: [MessageHandler(filters.text & ~filters.command, get_body)],
+            NUMBER_OF_EMAILS: [MessageHandler(filters.text & ~filters.command, get_number_of_emails)],
+            TIME_DELAY: [MessageHandler(filters.text & ~filters.command, get_time_delay)],
         },
         fallbacks=[CommandHandler('cancel', cancel)]
     )
