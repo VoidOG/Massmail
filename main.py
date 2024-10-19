@@ -1,6 +1,3 @@
-# ©Cenzo @Cenzeo
-# Mass Mail Bot Repository 
-# Only One in Telegram
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -9,13 +6,9 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackContext
 import random
 
-# Replace with your Telegram bot token
-TELEGRAM_BOT_TOKEN = '6795292888:AAGPvq5pOqoGIHXUpLrRv2EKytK_0gAIli4'
-
-# Define authorized users by their User IDs
+BOT_TOKEN = '6795292888:AAGPvq5pOqoGIHXUpLrRv2EKytK_0gAIli4'
 authorized_users = [6663845789, 6551446148, 6698364560, 1110013191]
 
-# Define sender emails and passwords
 senders = [
     {"email": "imvoid1001@gmail.com", "password": "mjmkalzfveddvkmr"},
     {"email": "massacres1001@gmail.com", "password": "vjkfmjnsiiajkbzh"},
@@ -27,20 +20,15 @@ senders = [
     {"email": "bhaisalmon6969@gmail.com", "password": "ducrkxtufoqemdbt"}
 ]
 
-# SMTP server details
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 465
 
-# Maximum emails allowed per session and per day
 MAX_EMAILS_PER_SESSION = 50
 MAX_EMAILS_PER_DAY = 800
 
-# Email counters to track daily usage
 email_counters = {}
 
-# Define stages for the conversation handler
 RECIPIENT, SUBJECT, BODY, NUMBER_OF_EMAILS, TIME_DELAY = range(5)
-
 
 def send_email(recipient, sender_email, sender_password, subject, body):
     """Function to send an email using specified sender credentials."""
@@ -52,7 +40,6 @@ def send_email(recipient, sender_email, sender_password, subject, body):
         message['Subject'] = subject
         message.attach(MIMEText(body, 'plain'))
 
-        # Create SMTP SSL session and send the email
         with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT) as server:
             server.login(sender_email, sender_password)
             server.send_message(message)
@@ -70,18 +57,15 @@ def start(update: Update, context: CallbackContext):
         update.message.reply_text('❌ ᴜɴᴀᴜᴛʜᴏʀɪᴢᴇᴅ ᴜsᴇʀ.')
         return ConversationHandler.END
 
-    # Keyboard buttons with links
     keyboard = [
         [InlineKeyboardButton("ᴅᴇᴠᴇʟᴏᴘᴇʀ", url="https://t.me/Cenzeo"),
          InlineKeyboardButton("ᴄʜᴀɴɴᴇʟ", url="https://t.me/themassacres")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    # Send the welcome image
     image_url = "https://telegra.ph/file/0b4853eb7a9d860f3e73b.jpg"
     context.bot.send_photo(chat_id=update.effective_chat.id, photo=image_url)
 
-    # Welcome message
     welcome_message = (
         " **👾 ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴍᴀss ᴍᴀɪʟ 👾** \n\n"
         "ᴛʜᴇ ᴜʟᴛɪᴍᴀᴛᴇ ʙᴜʟᴋ ᴇᴍᴀɪʟ ᴛᴏᴏʟ ᴅᴇsɪɢɴᴇᴅ ғᴏʀ ᴛʜᴏsᴇ ᴡʜᴏ ᴛʜɪɴᴋ ʙɪɢ. "
@@ -141,13 +125,11 @@ def get_number_of_emails(update: Update, context: CallbackContext):
     try:
         number_of_emails = int(update.message.text)
 
-        # Check the user's daily limit
         remaining = MAX_EMAILS_PER_DAY - email_counters.get(user_id, 0)
         if number_of_emails > remaining:
             update.message.reply_text(f'⚠️ ᴅᴀɪʟʏ ʟɪᴍɪᴛ ʀᴇᴀᴄʜᴇᴅ. ʏᴏᴜ ᴄᴀɴ sᴇɴᴅ ᴜᴘ ᴛᴏ {remaining} ᴍᴏʀᴇ ᴇᴍᴀɪʟs ᴛᴏᴅᴀʏ.')
             number_of_emails = remaining
 
-        # Check the session limit
         if number_of_emails > MAX_EMAILS_PER_SESSION:
             update.message.reply_text(f'⚠️ ʏᴏᴜ’ve ʀᴇǫᴜᴇsᴛᴇᴅ {number_of_emails} ᴇᴍᴀɪʟs. ᴛʜᴇ ᴍᴀx ᴄᴀᴘ ᴘᴇʀ sᴇssɪᴏɴ ɪs {MAX_EMAILS_PER_SESSION}. sᴇᴛᴛɪɴɪɴɢ ᴛᴏ 50.')
             number_of_emails = MAX_EMAILS_PER_SESSION
@@ -175,12 +157,10 @@ def get_time_delay(update: Update, context: CallbackContext):
         number_of_emails = context.user_data['number_of_emails']
         time_delay = context.user_data['time_delay']
 
-        # Initialize the user's email count if not already set
         email_counters.setdefault(user_id, 0)
 
         count = 0
         for _ in range(number_of_emails):
-            # Randomly select a sender from the list
             sender = random.choice(senders)
             if send_email(
                 recipient=recipient,
@@ -192,7 +172,6 @@ def get_time_delay(update: Update, context: CallbackContext):
                 count += 1
                 email_counters[user_id] += 1
 
-                # Check if the daily limit has been reached
                 if email_counters[user_id] >= MAX_EMAILS_PER_DAY:
                     update.message.reply_text("⛔ ᴅᴀɪʟʏ ᴇᴍᴀɪʟ ʟɪᴍɪᴛ ʀᴇᴀᴄʜᴇᴅ. ᴄᴏɴsɪᴅᴇʀ ʀᴇsᴜᴍɪɴɢ ᴛᴏᴍᴏʀʀᴏᴡ.")
                     break
@@ -221,10 +200,9 @@ def cancel(update: Update, context: CallbackContext):
 
 def main():
     """Start the bot and handle commands."""
-    updater = Updater(TELEGRAM_BOT_TOKEN, use_context=True)
+    updater = Updater(BOT_TOKEN, use_context=True)
     dispatcher = updater.dispatcher
 
-    # Define the conversation handler
     conversation_handler = ConversationHandler(
         entry_points=[CommandHandler('start', start)],
         states={
@@ -237,10 +215,8 @@ def main():
         fallbacks=[CommandHandler('cancel', cancel)]
     )
 
-    # Add conversation handler to dispatcher
     dispatcher.add_handler(conversation_handler)
 
-    # Start the bot
     updater.start_polling()
     updater.idle()
 
