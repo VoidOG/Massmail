@@ -132,7 +132,7 @@ def get_number_of_emails(update: Update, context: CallbackContext):
             number_of_emails = remaining
 
         if number_of_emails > MAX_EMAILS_PER_SESSION:
-            update.message.reply_text(f"𝖬𝖺𝗑 𝖼𝖺𝗉 𝗂𝗌 {MAX_EMAILS_PER_SESSION} 𝖾𝗆𝖺𝗂𝗅𝗌. 𝖲𝖾𝗍𝗍𝗂𝗇𝗀 𝗍𝗈 {MAX_EMAILS_PER_SESSION}.')
+            update.message.reply_text(f"𝖬𝖺𝗑 𝖼𝖺𝗉 𝗂𝗌 {MAX_EMAILS_PER_SESSION} 𝖾𝗆𝖺𝗂𝗅𝗌. 𝖲𝖾𝗍𝗍𝗂𝗇𝗀 𝗍𝗈 {MAX_EMAILS_PER_SESSION}.")
             number_of_emails = MAX_EMAILS_PER_SESSION
 
         context.user_data['number_of_emails'] = number_of_emails
