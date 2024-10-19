@@ -13,7 +13,7 @@ owner_id = 6663845789
 senders = [
     {"email": "imvoid1001@gmail.com", "password": "mjmkalzfveddvkmr"},
     {"email": "massacres1001@gmail.com", "password": "qlmqgfjuqttcizdr"},
-    {"email": "usaa45600@gmail.com", "password": "bwgdiqehvemfitjx"},
+    {"email": "usaa45600@gmail.com", "password": "lgejhxrgbkwfovwe"},
     {"email": "lolwhosucks@gmail.com", "password": "rssrsfmnpmzjtcxl"},
     {"email": "Yourmomsucksmine69@gmail.com", "password": "urpcznlkyazksbsr"},
     {"email": "unknowntikku@gmail.com", "password": "dffiufucyixcfzfq"},
