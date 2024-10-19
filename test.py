@@ -69,7 +69,7 @@ def start(update: Update, context: CallbackContext):
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    image_url = ""
+    image_url = "https://i.ibb.co/bg228Qh/file-250.jpg"
     context.bot.send_photo(chat_id=update.effective_chat.id, photo=image_url)
 
     welcome_message = (
