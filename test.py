@@ -32,11 +32,9 @@ user_list = set()
 
 RECIPIENT, SUBJECT, BODY, NUMBER_OF_EMAILS, TIME_DELAY, BROADCAST_MESSAGE = range(6)
 
-def reset_daily_counters():
-    """Function to reset the daily email counters."""
-    global email_counters
-    email_counters.clear()
-
+def reset_daily_counters(context):
+    pass
+    
 def send_email(recipient, sender_email, sender_password, subject, body):
     """Function to send an email using specified sender credentials."""
     try:
@@ -238,7 +236,7 @@ def main():
 
     dp.add_handler(CommandHandler('broadcast', broadcast))
 
-    updater.job_queue.run_daily(lambda context: reset_daily_counters(), time=time(0, 0, 0))
+    updater.job_queue.run_daily(lambda context: reset_daily_counters(context), time(0, 0, 0))
 
     updater.start_polling()
     updater.idle()
