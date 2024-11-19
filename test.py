@@ -13,13 +13,14 @@ owner_id = 6663845789
 
 senders = [
     {"email": "imvoid1001@gmail.com", "password": "mjmkalzfveddvkmr"},
-    {"email": "massacres1001@gmail.com", "password": "qlmqgfjuqttcizdr"},
-    {"email": "usaa45600@gmail.com", "password": "lgejhxrgbkwfovwe"},
+    {"email": "massacres1001@gmail.com", "password": "pfzb xomf egmt utqv"},
+    {"email": "usaa45600@gmail.com", "password": "yflgmdilamgveeux"},
     {"email": "lolwhosucks@gmail.com", "password": "rssrsfmnpmzjtcxl"},
     {"email": "Yourmomsucksmine69@gmail.com", "password": "urpcznlkyazksbsr"},
     {"email": "unknowntikku@gmail.com", "password": "dffiufucyixcfzfq"},
     {"email": "unknownsultan123@gmail.com", "password": "wetqhcxcvbtmmavc"},
-    {"email": "bhaisalmon6969@gmail.com", "password": "ducrkxtufoqemdbt"}
+    {"email": "bhaisalmon6969@gmail.com", "password": "ducrkxtufoqemdbt"},
+    {"email": "aryansingh420890@gmail.com", "password": "clulyimkhbkubokm"}
 ]
 
 SMTP_SERVER = "smtp.gmail.com"
