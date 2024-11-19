@@ -143,48 +143,40 @@ def get_number_of_emails(update: Update, context: CallbackContext):
         return NUMBER_OF_EMAILS
 
 def get_time_delay(update: Update, context: CallbackContext):
-    """Store the time delay and start sending the emails."""
+    """Store the time delay and start sending emails."""
     user_id = update.message.from_user.id
     if user_id not in authorized_users:
-        update.message.reply_text("𝖸𝗈𝗎 𝖺𝗋𝖾 𝗇𝗈𝗍 𝗉𝖾𝗋𝗆𝗂𝗍𝗍𝖾𝖽 𝗍𝗈 𝗎𝗌𝖾 𝗍𝗁𝗂𝗌 𝖻𝗈𝗍!!\n𝖡𝗎𝗒 𝗆𝖾𝗆𝖻𝖾𝗋𝗌𝗁𝗂𝗉 𝗈𝖿 𝗍𝗁𝖾 𝖻𝗈𝗍 𝗍𝗈 𝖿𝗋𝖾𝖾𝗅𝗒 𝗆𝖺𝗌𝗌 𝗆𝖺𝗂𝗅 𝖺𝗇𝗒𝗐𝗁𝖾𝗋𝖾 𝗐𝗂𝗍𝗁 𝗉𝗋𝗂𝖼𝗂𝗇𝗀 𝗌𝗍𝖺𝗋𝗍𝗂𝗇𝗀 𝖿𝗋𝗈𝗆 250 𝖨𝖭𝖱 𝖿𝗈𝗋 1 𝗆𝗈𝗇𝗍𝗁\n\n𝖳𝗈 𝗀𝖺𝗂𝗇 𝖺𝖼𝖼𝖾𝗌𝗌, 𝗁𝗂𝗍 𝖺𝗍 @𝖢𝖾𝗇𝗓𝖾𝗈")
+        update.message.reply_text("𝖸𝗈𝗎 𝖺𝗋𝖾 𝗇𝗈𝗍 𝗉𝖾𝗋𝗆𝗂𝗍𝗍𝖾𝖽 𝗍𝗈 𝗎𝗌𝖾 𝗍𝗁𝗂𝗌 𝖻𝗈𝗍!")
         return ConversationHandler.END
 
     try:
-        context.user_data['time_delay'] = float(update.message.text)
-        recipient = context.user_data['recipient']
-        subject = context.user_data['subject']
-        body = context.user_data['body']
-        number_of_emails = context.user_data['number_of_emails']
-        time_delay = context.user_data['time_delay']
-
-        email_counters.setdefault(user_id, 0)
-
-        count = 0
-        for _ in range(number_of_emails):
-            sender = random.choice(senders)
-            if send_email(
-                recipient=recipient,
-                sender_email=sender['email'],
-                sender_password=sender['password'],
-                subject=subject,
-                body=body
-            ):
-                count += 1
-                email_counters[user_id] += 1
-
-                if email_counters[user_id] >= MAX_EMAILS_PER_DAY:
-                    update.message.reply_text("𝖡𝗈𝗍'𝗌 𝖣𝖺𝗂𝗅𝗒 𝖾𝗆𝖺𝗂𝗅 𝗅𝗂𝗆𝗂𝗍 𝗋𝖾𝖺𝖼𝗁𝖾𝖽. 𝖳𝗋𝗒 𝖺𝗀𝖺𝗂𝗇 𝗍𝗈𝗆𝗈𝗋𝗋𝗈𝗐")
-                    break
-
-                update.message.reply_text(f"✅ {count} 𝖾𝗆𝖺𝗂𝗅{'s' if count > 1 else ''} 𝗌𝖾𝗇𝗍. 𝖶𝖺𝗂𝗍𝗂𝗇𝗀 𝖿𝗈𝗋 {time_delay} 𝗌𝖾𝖼𝗈𝗇𝖽𝗌.")
-
-            time.sleep(time_delay)
-
-        update.message.reply_text("𝖠𝗅𝗅 𝖾𝗆𝖺𝗂𝗅𝗌 𝗁𝖺𝗏𝖾 𝖻𝖾𝖾𝗇 𝗌𝖾𝗇𝗍")
+        context.user_data['time_delay'] = int(update.message.text)
+        update.message.reply_text("𝖠𝗅𝗅 𝗌𝖾𝗍! 𝖲𝗍𝖺𝗋𝗍𝗂𝗇𝗀 𝗍𝗈 𝗌𝖾𝗇𝖽 𝖾𝗆𝖺𝗂𝗅𝗌.")
+        start_sending_emails(update, context)
         return ConversationHandler.END
     except ValueError:
-        update.message.reply_text('𝖨𝗇𝗏𝖺𝗅𝗂𝖽 𝖣𝖾𝗅𝖺𝗒, 𝖳𝗋𝗒 𝖠𝗀𝖺𝗂𝗇.')
+        update.message.reply_text("𝖯𝗅𝖾𝖺𝗌𝖾 𝖾𝗇𝗍𝖾𝗋 𝖺 𝗏𝖺𝗅𝗂𝖽 𝗍𝗂𝗆𝖾 𝖽𝖾𝗅𝖺𝗒.")
         return TIME_DELAY
+
+def start_sending_emails(update: Update, context: CallbackContext):
+    """Send emails based on user inputs."""
+    recipient = context.user_data['recipient']
+    subject = context.user_data['subject']
+    body = context.user_data['body']
+    number_of_emails = context.user_data['number_of_emails']
+    time_delay = context.user_data['time_delay']
+
+    email_count = 0
+    for i in range(number_of_emails):
+        sender = random.choice(senders)
+        success = send_email(recipient, sender['email'], sender['password'], subject, body)
+        if success:
+            email_count += 1
+        if email_count >= MAX_EMAILS_PER_SESSION:
+            break
+        time.sleep(time_delay)
+
+    update.message.reply_text(f"𝖲𝖾𝗇𝗍 {email_count}/{number_of_emails} 𝖾𝗆𝖺𝗂𝗅𝗌 𝗌𝗎𝖼𝖼𝖾𝗌𝗌𝖿𝗎𝗅𝗅𝗒.")
 
 def broadcast(update: Update, context: CallbackContext):
     """Broadcast a message to all users who interacted with the bot."""
