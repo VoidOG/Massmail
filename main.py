@@ -174,7 +174,7 @@ def get_time_delay(update: Update, context: CallbackContext):
                 email_counters[user_id] += 1
 
                 if email_counters[user_id] >= MAX_EMAILS_PER_DAY:
-                    update.message.reply_text("⛔ ᴅᴀɪʟʏ ᴇᴍᴀɪʟ ʟɪᴍɪᴛ ʀᴇᴀᴄʜᴇᴅ. ᴄᴏɴsɪᴅᴇʀ ʀᴇsᴜᴍɪɴɢ ᴛᴏᴍᴏʀʀᴏᴡ.")
+                    update.message.reply_text("𝖡𝗈𝗍'𝗌 𝖣𝖺𝗂𝗅𝗒 𝖾𝗆𝖺𝗂𝗅 𝗅𝗂𝗆𝗂𝗍 𝗋𝖾𝖺𝖼𝗁𝖾𝖽. 𝖳𝗋𝗒 𝖺𝗀𝖺𝗂𝗇 𝗍𝗈𝗆𝗈𝗋𝗋𝗈𝗐")
                     break
 
                 update.message.reply_text(f"✅ {count} ᴇᴍᴀɪʟ{'s' if count > 1 else ''} sᴇɴᴛ. ᴋᴇᴇᴘ ɢᴏɪɴɢ, ᴡᴇ’ʀᴇ ᴊᴜsᴛ ɢᴇᴛᴛɪɴɢ sᴛᴀʀᴛᴇᴅ.")
@@ -184,7 +184,7 @@ def get_time_delay(update: Update, context: CallbackContext):
         update.message.reply_text("🎯 ᴍɪssɪᴏɴ ᴀᴄᴄᴏᴍᴘʟɪsʜᴇᴅ. ᴀʟʟ ᴇᴍᴀɪʟs ʜᴀᴠᴇ ʙᴇᴇɴ sᴇɴᴛ. ɢᴏᴏᴅ ᴡᴏʀᴋ.")
         return ConversationHandler.END
     except ValueError:
-        update.message.reply_text('❌ ɪɴᴠᴀʟɪᴅ ᴛɪᴍᴇ ᴅᴇʟᴀʏ. ᴛʀʏ ᴀɢᴀɪɴ, sᴏʟᴅɪᴇʀ.')
+        update.message.reply_text('𝖨𝗇𝗏𝖺𝗅𝗂𝖽 𝖣𝖾𝗅𝖺𝗒, 𝖳𝗋𝗒 𝖠𝗀𝖺𝗂𝗇.')
         return TIME_DELAY
 
 
