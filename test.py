@@ -5,7 +5,6 @@ from datetime import time
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackContext
 import random
-import time
 
 
 BOT_TOKEN = "6795292888:AAGPvq5pOqoGIHXUpLrRv2EKytK_0gAIli4"
@@ -152,6 +151,8 @@ def get_time_delay(update: Update, context: CallbackContext):
 
     try:
         context.user_data['time_delay'] = int(update.message.text)
+          if isinstance(time_delay, datetime.time):
+        time_delay = (time_delay.hour * 3600) + (time_delay.minute * 60) + time_delay.second
         update.message.reply_text("𝖠𝗅𝗅 𝗌𝖾𝗍! 𝖲𝗍𝖺𝗋𝗍𝗂𝗇𝗀 𝗍𝗈 𝗌𝖾𝗇𝖽 𝖾𝗆𝖺𝗂𝗅𝗌.")
         start_sending_emails(update, context)
         return ConversationHandler.END
