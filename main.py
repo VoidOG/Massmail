@@ -55,7 +55,7 @@ def start(update: Update, context: CallbackContext):
     """Start the conversation and send a welcome message with buttons and an image."""
     user_id = update.message.from_user.id
     if user_id not in authorized_users:
-        update.message.reply_text("")
+        update.message.reply_text("𝖸𝗈𝗎 𝖺𝗋𝖾 𝗇𝗈𝗍 𝗉𝖾𝗋𝗆𝗂𝗍𝗍𝖾𝖽 𝗍𝗈 𝗎𝗌𝖾 𝗍𝗁𝗂𝗌 𝖻𝗈𝗍!!\n𝖡𝗎𝗒 𝗆𝖾𝗆𝖻𝖾𝗋𝗌𝗁𝗂𝗉 𝗈𝖿 𝗍𝗁𝖾 𝖻𝗈𝗍 𝗍𝗈 𝖿𝗋𝖾𝖾𝗅𝗒 𝗆𝖺𝗌𝗌 𝗆𝖺𝗂𝗅 𝖺𝗇𝗒𝗐𝗁𝖾𝗋𝖾 𝗐𝗂𝗍𝗁 𝗉𝗋𝗂𝖼𝗂𝗇𝗀 𝗌𝗍𝖺𝗋𝗍𝗂𝗇𝗀 𝖿𝗋𝗈𝗆 250 𝖨𝖭𝖱 𝖿𝗈𝗋 1 𝗆𝗈𝗇𝗍𝗁\n\n𝖳𝗈 𝗀𝖺𝗂𝗇 𝖺𝖼𝖼𝖾𝗌𝗌, 𝗁𝗂𝗍 𝖺𝗍 @Cenzeo")
         return ConversationHandler.END
 
     keyboard = [
