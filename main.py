@@ -177,7 +177,7 @@ def get_time_delay(update: Update, context: CallbackContext):
                     update.message.reply_text("𝖡𝗈𝗍'𝗌 𝖣𝖺𝗂𝗅𝗒 𝖾𝗆𝖺𝗂𝗅 𝗅𝗂𝗆𝗂𝗍 𝗋𝖾𝖺𝖼𝗁𝖾𝖽. 𝖳𝗋𝗒 𝖺𝗀𝖺𝗂𝗇 𝗍𝗈𝗆𝗈𝗋𝗋𝗈𝗐")
                     break
 
-                update.message.reply_text(f"✅ {count} ᴇᴍᴀɪʟ{'s' if count > 1 else ''} sᴇɴᴛ. ᴋᴇᴇᴘ ɢᴏɪɴɢ, ᴡᴇ’ʀᴇ ᴊᴜsᴛ ɢᴇᴛᴛɪɴɢ sᴛᴀʀᴛᴇᴅ.")
+                update.message.reply_text(f"✅ {count} 𝖾𝗆𝖺𝗂𝗅{'s' if count > 1 else ''} 𝗌𝖾𝗇𝗍. 𝖶𝖺𝗂𝗍𝗂𝗇𝗀 𝖿𝗈𝗋 {time_delay} 𝗌𝖾𝖼𝗈𝗇𝖽𝗌.")
 
             time.sleep(time_delay)
 
