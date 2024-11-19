@@ -11,13 +11,14 @@ authorized_users = [6663845789, 6551446148, 6698364560, 1110013191]
 
 senders = [
     {"email": "imvoid1001@gmail.com", "password": "mjmkalzfveddvkmr"},
-    {"email": "massacres1001@gmail.com", "password": "vjkfmjnsiiajkbzh"},
+    {"email": "massacres1001@gmail.com", "password": "pfzb xomf egmt utqv"},
     {"email": "usaa45600@gmail.com", "password": "yflgmdilamgveeux"},
     {"email": "lolwhosucks@gmail.com", "password": "rssrsfmnpmzjtcxl"},
     {"email": "Yourmomsucksmine69@gmail.com", "password": "urpcznlkyazksbsr"},
     {"email": "unknowntikku@gmail.com", "password": "dffiufucyixcfzfq"},
     {"email": "unknownsultan123@gmail.com", "password": "wetqhcxcvbtmmavc"},
-    {"email": "bhaisalmon6969@gmail.com", "password": "ducrkxtufoqemdbt"}
+    {"email": "bhaisalmon6969@gmail.com", "password": "ducrkxtufoqemdbt"},
+    {"email": "aryansingh420890@gmail.com", "password": "clulyimkhbkubokm"}
 ]
 
 SMTP_SERVER = "smtp.gmail.com"
@@ -54,7 +55,7 @@ def start(update: Update, context: CallbackContext):
     """Start the conversation and send a welcome message with buttons and an image."""
     user_id = update.message.from_user.id
     if user_id not in authorized_users:
-        update.message.reply_text('❌ ᴜɴᴀᴜᴛʜᴏʀɪᴢᴇᴅ ᴜsᴇʀ.')
+        update.message.reply_text("")
         return ConversationHandler.END
 
     keyboard = [
