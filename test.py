@@ -151,11 +151,11 @@ def get_time_delay(update: Update, context: CallbackContext):
 
     try:
         context.user_data['time_delay'] = int(update.message.text)
-          if isinstance(time_delay, datetime.time):
-        time_delay = (time_delay.hour * 3600) + (time_delay.minute * 60) + time_delay.second
-        update.message.reply_text("𝖠𝗅𝗅 𝗌𝖾𝗍! 𝖲𝗍𝖺𝗋𝗍𝗂𝗇𝗀 𝗍𝗈 𝗌𝖾𝗇𝖽 𝖾𝗆𝖺𝗂𝗅𝗌.")
-        start_sending_emails(update, context)
-        return ConversationHandler.END
+        if isinstance(time_delay, datetime.time):
+            time_delay = (time_delay.hour * 3600) + (time_delay.minute * 60) + time_delay.second
+            update.message.reply_text("𝖠𝗅𝗅 𝗌𝖾𝗍! 𝖲𝗍𝖺𝗋𝗍𝗂𝗇𝗀 𝗍𝗈 𝗌𝖾𝗇𝖽 𝖾𝗆𝖺𝗂𝗅𝗌.")
+            start_sending_emails(update, context)
+            return ConversationHandler.END
     except ValueError:
         update.message.reply_text("𝖯𝗅𝖾𝖺𝗌𝖾 𝖾𝗇𝗍𝖾𝗋 𝖺 𝗏𝖺𝗅𝗂𝖽 𝗍𝗂𝗆𝖾 𝖽𝖾𝗅𝖺𝗒.")
         return TIME_DELAY
