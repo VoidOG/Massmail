@@ -7,7 +7,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Conve
 import random
 
 BOT_TOKEN = '6795292888:AAGPvq5pOqoGIHXUpLrRv2EKytK_0gAIli4'
-authorized_users = [6663845789, 6551446148, 6698364560, 1110013191]
+authorized_users = [6663845789, 6551446148, 6698364560, 1110013191, 7306043964]
 
 senders = [
     {"email": "imvoid1001@gmail.com", "password": "mjmkalzfveddvkmr"},
