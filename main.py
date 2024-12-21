@@ -63,8 +63,9 @@ def start(update: Update, context: CallbackContext):
         return ConversationHandler.END
 
     keyboard = [
-        [InlineKeyboardButton("𝖡𝗈𝗍 𝖴𝗉𝖽𝖺𝗍𝖾𝗌", url="https://t.me/AlcyoneBots"),
-         InlineKeyboardButton("𝖡𝗈𝗍 𝖲𝗎𝗉𝗉𝗈𝗋𝗍", url="https://t.me/Alcyone_Support")]
+        [InlineKeyboardButton("Bot Updates", url="https://t.me/alcyonebots"),
+         InlineKeyboardButton("Bot Support", url="https://t.me/alcyone_support"),
+         InlineKeyboardButton("Buy Subscription", callback_data='buy')]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
@@ -198,54 +199,96 @@ def cancel(update: Update, context: CallbackContext):
     update.message.reply_text('❌ ᴏᴘᴇʀᴀᴛɪᴏɴ ᴀʙᴏʀᴛᴇᴅ. ᴜɴᴛɪʟ ɴᴇxᴛ ᴛɪᴍᴇ.')
     return ConversationHandler.END
 
-
 def buy(update: Update, context: CallbackContext):
-    """Send a message with text and two inline buttons using MarkdownV2 formatting."""
+    """Send message with View Plans button and edit it to show different plans."""
     keyboard = [
-        [InlineKeyboardButton("Contact Developer", url="https://t.me/Cenzeo"),
-         InlineKeyboardButton("Join Channel", url="https://t.me/themassacres")]
+        [InlineKeyboardButton("View Plans", callback_data='view_plans')]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-
-    # MarkdownV2 formatted text
-    message = (
-        "```"
-        "To access the premium features of the bot, you need to buy a membership. "
-        "💡  Here's how you can proceed:\n\n"
-        "1. Contact the developer for payment details\n"
-        "2. Join our channel for updates\n\n"
-        "💰 Membership starts at 250 INR for 1 month! 💰"
-        "```"
+    update.message.reply_text(
+        "Click below to view the available subscription plans.",
+        reply_markup=reply_markup
     )
 
-    update.message.reply_text(message, reply_markup=reply_markup, parse_mode="MarkdownV2")
+def handle_buy_plans(update: Update, context: CallbackContext):
+    """Edit the message to show subscription options after clicking View Plans."""
+    keyboard = [
+        [InlineKeyboardButton("Silver Plan", callback_data='silver')],
+        [InlineKeyboardButton("Gold Plan", callback_data='gold')],
+        [InlineKeyboardButton("Diamond Plan", callback_data='diamond')],
+        [InlineKeyboardButton("Close", callback_data='close')]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.callback_query.edit_message_text(
+        "Choose your plan:",
+        reply_markup=reply_markup
+    )
 
+def handle_plan_details(update: Update, context: CallbackContext):
+    """Edit message to show details for each plan."""
+    plan = update.callback_query.data
+
+    if plan == 'silver':
+        message = "Silver Plan: 250 INR/month\nBenefits: Basic features"
+        keyboard = [
+            [InlineKeyboardButton("Back", callback_data='view_plans')],
+            [InlineKeyboardButton("Close", callback_data='close')]
+        ]
+    elif plan == 'gold':
+        message = "Gold Plan: 500 INR/month\nBenefits: Advanced features"
+        keyboard = [
+            [InlineKeyboardButton("Back", callback_data='view_plans')],
+            [InlineKeyboardButton("Close", callback_data='close')]
+        ]
+    elif plan == 'diamond':
+        message = "Diamond Plan: 1000 INR/month\nBenefits: Premium features"
+        keyboard = [
+            [InlineKeyboardButton("Back", callback_data='view_plans')],
+            [InlineKeyboardButton("Close", callback_data='close')]
+        ]
+
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.callback_query.edit_message_text(
+        message,
+        reply_markup=reply_markup
+    )
+
+def close(update: Update, context: CallbackContext):
+    """Close the current message."""
+    update.callback_query.delete_message
 
 def main():
     """Start the bot and handle commands."""
-    updater = Updater(BOT_TOKEN, use_context=True)
+    updater = Updater("7723827922:AAEqfJr9J9UZFSuXolc2Ok5rPcht15jPg9M", use_context=True)
     dispatcher = updater.dispatcher
 
+    # Add command handlers for /start and /buy
+    dispatcher.add_handler(CommandHandler('start', start))
+    dispatcher.add_handler(CommandHandler('buy', buy))
+
+    # Create conversation handler for subscription-related actions
     conversation_handler = ConversationHandler(
         entry_points=[CommandHandler('start', start)],
         states={
-            RECIPIENT: [MessageHandler(Filters.text & ~Filters.command, get_recipient)],
-            SUBJECT: [MessageHandler(Filters.text & ~Filters.command, get_subject)],
-            BODY: [MessageHandler(Filters.text & ~Filters.command, get_body)],
-            NUMBER_OF_EMAILS: [MessageHandler(Filters.text & ~Filters.command, get_number_of_emails)],
-            TIME_DELAY: [MessageHandler(Filters.text & ~Filters.command, get_time_delay)],
+            SILVER: [MessageHandler(Filters.text & ~Filters.command, get_recipient)],
+            GOLD: [MessageHandler(Filters.text & ~Filters.command, get_subject)],
+            DIAMOND: [MessageHandler(Filters.text & ~Filters.command, get_body)],
+            BACK: [MessageHandler(Filters.text & ~Filters.command, get_number_of_emails)],
+            CLOSE: [MessageHandler(Filters.text & ~Filters.command, get_time_delay)],
         },
         fallbacks=[CommandHandler('cancel', cancel)]
     )
-    
-    buy_handler = CommandHandler('buy', buy)
-    dispatcher.add_handler(buy_handler)
 
     dispatcher.add_handler(conversation_handler)
 
+    # Handle callback queries for inline buttons
+    dispatcher.add_handler(CallbackQueryHandler(handle_buy_plans, pattern='view_plans'))
+    dispatcher.add_handler(CallbackQueryHandler(handle_plan_details, pattern='silver|gold|diamond'))
+    dispatcher.add_handler(CallbackQueryHandler(close, pattern='close'))
+
+    # Start polling
     updater.start_polling()
     updater.idle()
-
 
 if __name__ == '__main__':
     main()
