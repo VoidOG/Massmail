@@ -59,8 +59,7 @@ def start(update: Update, context: CallbackContext):
         update.message.reply_text(
             "``` You are not permitted to use this bot\n",
             "≡ 𝖡𝗎𝗒 𝗆𝖾𝗆𝖻𝖾𝗋𝗌𝗁𝗂𝗉 𝗈𝖿 𝗍𝗁𝖾 𝖻𝗈𝗍 𝗍𝗈 𝖿𝗋𝖾𝖾𝗅𝗒 𝗆𝖺𝗌𝗌 𝗆𝖺𝗂𝗅 𝖺𝗇𝗒𝗐𝗁𝖾𝗋𝖾.```\n",
-            "⩉ 𝖳𝗈 𝗏𝗂𝖾𝗐 𝗉𝗅𝖺𝗇𝗌, 𝗁𝗂𝗍 /𝖻𝗎𝗒",
-            parse_mode=ParseMode.MARKDOWN_V2,
+            "⩉ 𝖳𝗈 𝗏𝗂𝖾𝗐 𝗉𝗅𝖺𝗇𝗌, 𝗁𝗂𝗍 /𝖻𝗎𝗒"
         )
         return ConversationHandler.END
 
@@ -251,7 +250,6 @@ def handle_plan_details(update: Update, context: CallbackContext):
     update.callback_query.edit_message_text(
         message,
         reply_markup=reply_markup,
-        parse_mode=ParseMode.MARKDOWN_V2
     )
 
     return RECIPIENT
