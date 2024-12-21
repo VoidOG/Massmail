@@ -270,11 +270,11 @@ def main():
     conversation_handler = ConversationHandler(
         entry_points=[CommandHandler('start', start)],
         states={
-            SILVER: [MessageHandler(Filters.text & ~Filters.command, get_recipient)],
-            GOLD: [MessageHandler(Filters.text & ~Filters.command, get_subject)],
-            DIAMOND: [MessageHandler(Filters.text & ~Filters.command, get_body)],
-            BACK: [MessageHandler(Filters.text & ~Filters.command, get_number_of_emails)],
-            CLOSE: [MessageHandler(Filters.text & ~Filters.command, get_time_delay)],
+            RECIPIENT: [MessageHandler(Filters.text & ~Filters.command, get_recipient)],
+            SUBJECT: [MessageHandler(Filters.text & ~Filters.command, get_subject)],
+            BODY: [MessageHandler(Filters.text & ~Filters.command, get_body)],
+            NUMBER_OF_EMAILS: [MessageHandler(Filters.text & ~Filters.command, get_number_of_emails)],
+            TIME_DELAY: [MessageHandler(Filters.text & ~Filters.command, get_time_delay)],
         },
         fallbacks=[CommandHandler('cancel', cancel)]
     )
