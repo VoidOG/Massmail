@@ -64,8 +64,8 @@ def start(update: Update, context: CallbackContext):
 
     keyboard = [
         [InlineKeyboardButton("Bot Updates", url="https://t.me/alcyonebots"),
-         InlineKeyboardButton("Bot Support", url="https://t.me/alcyone_support"),
-         InlineKeyboardButton("Buy Subscription", callback_data='buy')]
+         InlineKeyboardButton("Bot Support", url="https://t.me/alcyone_support")],
+        [InlineKeyboardButton("Buy Subscription", callback_data='view_plans')]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
