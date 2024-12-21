@@ -201,6 +201,28 @@ def cancel(update: Update, context: CallbackContext):
     return ConversationHandler.END
 
 
+def buy(update: Update, context: CallbackContext):
+    """Send a message with text and two inline buttons using MarkdownV2 formatting."""
+    keyboard = [
+        [InlineKeyboardButton("Contact Developer", url="https://t.me/Cenzeo"),
+         InlineKeyboardButton("Join Channel", url="https://t.me/themassacres")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    # MarkdownV2 formatted text
+    message = (
+        "```"
+        "To access the premium features of the bot, you need to buy a membership. "
+        "💡  Here's how you can proceed:\n\n"
+        "1. Contact the developer for payment details\n"
+        "2. Join our channel for updates\n\n"
+        "💰 Membership starts at 250 INR for 1 month! 💰"
+        "```"
+    )
+
+    update.message.reply_text(message, reply_markup=reply_markup, parse_mode="MarkdownV2")
+
+
 def main():
     """Start the bot and handle commands."""
     updater = Updater(BOT_TOKEN, use_context=True)
@@ -217,6 +239,9 @@ def main():
         },
         fallbacks=[CommandHandler('cancel', cancel)]
     )
+    
+    buy_handler = CommandHandler('buy', buy)
+    dispatcher.add_handler(buy_handler)
 
     dispatcher.add_handler(conversation_handler)
 
