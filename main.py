@@ -56,8 +56,9 @@ def start(update: Update, context: CallbackContext):
     user_id = update.message.from_user.id
     if user_id not in authorized_users:
         update.message.reply_text(
-            "```𝖸𝗈𝗎 𝖺𝗋𝖾 𝗇𝗈𝗍 𝗉𝖾𝗋𝗆𝗂𝗍𝗍𝖾𝖽 𝗍𝗈 𝗎𝗌𝖾 𝗍𝗁𝗂𝗌 𝖻𝗈𝗍!!\n"
-            "𝖯𝗎𝗒 𝗆𝖾𝗆𝖻𝗾𝗅....<<you can insert the next text here for full length>>```",
+            "```𝗬𝗼𝘂 𝗮𝗿𝗲 𝗻𝗼𝘁 𝗽𝗲𝗿𝗺𝗶𝘁𝘁𝗲𝗱 𝘁𝗼 𝘂𝘀𝗲 𝘁𝗵𝗶𝘀 𝗯𝗼𝘁\n"
+            "𝖡𝗎𝗒 𝗆𝖾𝗆𝖻𝖾𝗋𝗌𝗁𝗂𝗉 𝗈𝖿 𝗍𝗁𝖾 𝖻𝗈𝗍 𝗍𝗈 𝖿𝗋𝖾𝖾𝗅𝗒 𝗆𝖺𝗌𝗌 𝗆𝖺𝗂𝗅 𝖺𝗇𝗒𝗐𝗁𝖾𝗋𝖾.```\n\n",
+            "⩉ 𝖳𝗈 𝗏𝗂𝖾𝗐 𝗉𝗅𝖺𝗇𝗌, 𝗁𝗂𝗍 /𝖻𝗎𝗒"
             parse_mode="MarkdownV2"
         )
         return ConversationHandler.END
