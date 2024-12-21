@@ -199,8 +199,9 @@ def cancel(update: Update, context: CallbackContext):
     update.message.reply_text('❌ ᴏᴘᴇʀᴀᴛɪᴏɴ ᴀʙᴏʀᴛᴇᴅ. ᴜɴᴛɪʟ ɴᴇxᴛ ᴛɪᴍᴇ.')
     return ConversationHandler.END
 
+# Buy command to show initial plans view
 def buy(update: Update, context: CallbackContext):
-    """Send message with View Plans button and edit it to show different plans."""
+    """Handle /buy command and show the initial plans view."""
     keyboard = [
         [InlineKeyboardButton("View Plans", callback_data='view_plans')]
     ]
@@ -210,6 +211,9 @@ def buy(update: Update, context: CallbackContext):
         reply_markup=reply_markup
     )
 
+    return RECIPIENT
+
+# Handle "View Plans" button press
 def handle_buy_plans(update: Update, context: CallbackContext):
     """Edit the message to show subscription options after clicking View Plans."""
     keyboard = [
@@ -224,39 +228,46 @@ def handle_buy_plans(update: Update, context: CallbackContext):
         reply_markup=reply_markup
     )
 
+    return RECIPIENT
+
+# Handle plan details and show the back and close buttons
 def handle_plan_details(update: Update, context: CallbackContext):
     """Edit message to show details for each plan."""
     plan = update.callback_query.data
 
     if plan == 'silver':
         message = "Silver Plan: 250 INR/month\nBenefits: Basic features"
-        keyboard = [
-            [InlineKeyboardButton("Back", callback_data='view_plans')],
-            [InlineKeyboardButton("Close", callback_data='close')]
-        ]
     elif plan == 'gold':
         message = "Gold Plan: 500 INR/month\nBenefits: Advanced features"
-        keyboard = [
-            [InlineKeyboardButton("Back", callback_data='view_plans')],
-            [InlineKeyboardButton("Close", callback_data='close')]
-        ]
     elif plan == 'diamond':
         message = "Diamond Plan: 1000 INR/month\nBenefits: Premium features"
-        keyboard = [
-            [InlineKeyboardButton("Back", callback_data='view_plans')],
-            [InlineKeyboardButton("Close", callback_data='close')]
-        ]
 
+    keyboard = [
+        [InlineKeyboardButton("Back", callback_data='view_plans')],
+        [InlineKeyboardButton("Close", callback_data='close')]
+    ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.callback_query.edit_message_text(
         message,
         reply_markup=reply_markup
     )
 
+    return RECIPIENT
+
+# Close the message
 def close(update: Update, context: CallbackContext):
     """Close the current message."""
-    update.callback_query.delete_message
+    update.callback_query.delete_message()
 
+    return ConversationHandler.END
+
+# Cancel the conversation
+def cancel(update: Update, context: CallbackContext):
+    """Cancel the conversation."""
+    update.message.reply_text("Operation cancelled.")
+    return ConversationHandler.END
+
+# Main function to handle the bot's lifecycle
 def main():
     """Start the bot and handle commands."""
     updater = Updater("7723827922:AAEqfJr9J9UZFSuXolc2Ok5rPcht15jPg9M", use_context=True)
