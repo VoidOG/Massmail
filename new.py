@@ -75,9 +75,20 @@ def start(update: Update, context: CallbackContext):
     )
 
     context.bot.send_photo(chat_id=update.effective_chat.id, photo=image_url, caption=caption, reply_markup=reply_markup)
+
+
+def mail(update: Update, context: CallbackContext):
+    user_id = update.message.from_user.id
+    if user_id not in authorized_users:
+        update.message.reply_text("You are not authorized to use this bot.")
+        return
+
+    update.message.reply_text(
+        "Let's start sending emails!\n\n"
+        "Please provide the recipient's email address."
+    )
     return RECIPIENT
-
-
+    
 def get_recipient(update: Update, context: CallbackContext):
     """Store the recipient email and ask for the subject."""
     user_id = update.message.from_user.id
@@ -276,7 +287,7 @@ def main():
 
     # Create conversation handler for subscription-related actions
     conversation_handler = ConversationHandler(
-        entry_points=[CommandHandler('start', start)],
+        entry_points=[CommandHandler('mail', mail)],
         states={
             RECIPIENT: [MessageHandler(Filters.text & ~Filters.command, get_recipient)],
             SUBJECT: [MessageHandler(Filters.text & ~Filters.command, get_subject)],
