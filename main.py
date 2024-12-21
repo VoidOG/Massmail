@@ -249,7 +249,7 @@ def handle_plan_details(update: Update, context: CallbackContext):
     elif plan == 'gold':
         message = "𝗚𝗼𝗹𝗱 𝗣𝗹𝗮𝗻\n\n 15 𝖣𝖺𝗒𝗌- 150𝖨𝖭𝖱 or 2$ \n\n≡ 𝖶𝗂𝗍𝗁 𝗍𝗁𝗂𝗌 𝗉𝗅𝖺𝗇 𝗒𝗈𝗎 𝖼𝖺𝗇 𝖿𝗋𝖾𝖾𝗅𝗒 𝖺𝖼𝖼𝖾𝗌𝗌 𝗈𝗎𝗋 𝖬𝖺𝗌𝗌 𝖬𝖺𝗂𝗅 𝖻𝗈𝗍 𝖿𝗈𝗋 15 𝖣𝖺𝗒𝗌.\n⩉ [𝖢𝗅𝗂𝖼𝗄 𝗁𝖾𝗋𝖾 𝗍𝗈 𝗀𝖾𝗍 𝖰𝖱](https://i.ibb.co/w0VpVpk/file-5661.jpg)\n⌕ 𝖥𝗈𝗋 𝗈𝗍𝗁𝖾𝗋 𝗉𝖺𝗒𝗆𝖾𝗇𝗍 𝗆𝖾𝗍𝗁𝗈𝖽𝗌, 𝖼𝗈𝗇𝗍𝖺𝖼𝗍 @cenzeo"
     elif plan == 'diamond':
-        message = "𝗗𝗶𝗮𝗺𝗼𝗻𝗱 𝗣𝗹𝗮𝗻\n\n 30 𝖣𝖺𝗒𝗌- 250𝖨𝖭𝖱 or 4$ \n\n≡ 𝖶𝗂𝗍𝗁 𝗍𝗁𝗂𝗌 𝗉𝗅𝖺𝗇 𝗒𝗈𝗎 𝖼𝖺𝗇 𝖿𝗋𝖾𝖾𝗅𝗒 𝖺𝖼𝖼𝖾𝗌𝗌 𝗈𝗎𝗋 𝖬𝖺𝗌𝗌 𝖬𝖺𝗂𝗅 𝖻𝗈𝗍 𝖿𝗈𝗋 15 𝖣𝖺𝗒𝗌.\n⩉ [𝖢𝗅𝗂𝖼𝗄 𝗁𝖾𝗋𝖾 𝗍𝗈 𝗀𝖾𝗍 𝖰𝖱](https://i.ibb.co/w0VpVpk/file-5661.jpg)\n⌕ 𝖥𝗈𝗋 𝗈𝗍𝗁𝖾𝗋 𝗉𝖺𝗒𝗆𝖾𝗇𝗍 𝗆𝖾𝗍𝗁𝗈𝖽𝗌, 𝖼𝗈𝗇𝗍𝖺𝖼𝗍 @cenzeo"
+        message = "𝗗𝗶𝗮𝗺𝗼𝗻𝗱 𝗣𝗹𝗮𝗻\n\n 30 𝖣𝖺𝗒𝗌- 250𝖨𝖭𝖱 or 4$ \n\n≡ 𝖶𝗂𝗍𝗁 𝗍𝗁𝗂𝗌 𝗉𝗅𝖺𝗇 𝗒𝗈𝗎 𝖼𝖺𝗇 𝖿𝗋𝖾𝖾𝗅𝗒 𝖺𝖼𝖼𝖾𝗌𝗌 𝗈𝗎𝗋 𝖬𝖺𝗌𝗌 𝖬𝖺𝗂𝗅 𝖻𝗈𝗍 𝖿𝗈𝗋 30 𝖣𝖺𝗒𝗌.\n⩉ [𝖢𝗅𝗂𝖼𝗄 𝗁𝖾𝗋𝖾 𝗍𝗈 𝗀𝖾𝗍 𝖰𝖱](https://i.ibb.co/w0VpVpk/file-5661.jpg)\n⌕ 𝖥𝗈𝗋 𝗈𝗍𝗁𝖾𝗋 𝗉𝖺𝗒𝗆𝖾𝗇𝗍 𝗆𝖾𝗍𝗁𝗈𝖽𝗌, 𝖼𝗈𝗇𝗍𝖺𝖼𝗍 @cenzeo"
 
     keyboard = [
         [InlineKeyboardButton("𝖡𝖺𝖼𝗄", callback_data='view_plans')],
