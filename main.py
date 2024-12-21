@@ -63,8 +63,8 @@ def start(update: Update, context: CallbackContext):
         return ConversationHandler.END
 
     keyboard = [
-        [InlineKeyboardButton("Bot Updates", url="https://t.me/alcyonebots"),
-         InlineKeyboardButton("Bot Support", url="https://t.me/alcyone_support")],
+        [InlineKeyboardButton("𝖡𝗈𝗍 𝖴𝗉𝖽𝖺𝗍𝖾𝗌", url="https://t.me/alcyonebots"),
+         InlineKeyboardButton("𝖡𝗈𝗍 𝖲𝗎𝗉𝗉𝗈𝗋𝗍", url="https://t.me/alcyone_support")],
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
@@ -88,7 +88,7 @@ def get_recipient(update: Update, context: CallbackContext):
         return ConversationHandler.END
 
     context.user_data['recipient'] = update.message.text
-    update.message.reply_text('📧 ɢᴏᴛ ɪᴛ. ɴᴏᴡ, ʜɪᴛ ᴍᴇ ᴡɪᴛʜ ᴛʜᴇ sᴜʙᴊᴇᴄᴛ ᴏғ ᴛʜᴇ ᴇᴍᴀɪʟ.')
+    update.message.reply_text('𝖭𝗈𝗐, 𝗁𝗂𝗍 𝗆𝖾 𝗐𝗂𝗍𝗁 𝗍𝗁𝖾 𝗌𝗎𝖻𝗃𝖾𝖼𝗍 𝗈𝖿 𝗍𝗁𝖾 𝖾𝗆𝖺𝗂𝗅.')
     return SUBJECT
 
 
@@ -100,7 +100,7 @@ def get_subject(update: Update, context: CallbackContext):
         return ConversationHandler.END
 
     context.user_data['subject'] = update.message.text
-    update.message.reply_text('📝 sᴜʙᴊᴇᴄᴛ ʟᴏᴄᴋᴇᴅ ᴀɴᴅ ʟᴏᴀᴅᴇᴅ. ɴᴏᴡ, ᴅʀᴏᴘ ᴛʜᴇ ʙᴏᴅʏ ᴏғ ᴛʜᴇ ᴇᴍᴀɪʟ.')
+    update.message.reply_text('𝖭𝗈𝗐, 𝖽𝗋𝗈𝗉 𝗍𝗁𝖾 𝖻𝗈𝖽𝗒 𝗈𝖿 𝗍𝗁𝖾 𝖾𝗆𝖺𝗂𝗅.')
     return BODY
 
 
@@ -112,7 +112,7 @@ def get_body(update: Update, context: CallbackContext):
         return ConversationHandler.END
 
     context.user_data['body'] = update.message.text
-    update.message.reply_text(f'✍️ ʙᴏᴅʏ ʀᴇᴄᴇɪᴠᴇᴅ. ʜᴏᴡ ᴍᴀɴʏ ᴇᴍᴀɪʟs ᴀʀᴇ ᴡᴇ ғɪʀɪɴɢ ᴏғғ ᴛᴏᴅᴀʏ? (ᴍᴀx {MAX_EMAILS_PER_SESSION})')
+    update.message.reply_text(f'𝖧𝗈𝗐 𝗆𝖺𝗇𝗒 𝖾𝗆𝖺𝗂𝗅𝗌 𝖺𝗋𝖾 𝗐𝖾 𝖿𝗂𝗋𝗂𝗇𝗀 𝗈𝖿𝖿 𝗍𝗈𝖽𝖺𝗒? (Max {MAX_EMAILS_PER_SESSION})')
     return NUMBER_OF_EMAILS
 
 
@@ -128,18 +128,18 @@ def get_number_of_emails(update: Update, context: CallbackContext):
 
         remaining = MAX_EMAILS_PER_DAY - email_counters.get(user_id, 0)
         if number_of_emails > remaining:
-            update.message.reply_text(f'⚠️ ᴅᴀɪʟʏ ʟɪᴍɪᴛ ʀᴇᴀᴄʜᴇᴅ. ʏᴏᴜ ᴄᴀɴ sᴇɴᴅ ᴜᴘ ᴛᴏ {remaining} ᴍᴏʀᴇ ᴇᴍᴀɪʟs ᴛᴏᴅᴀʏ.')
+            update.message.reply_text(f'⚠️ 𝖣𝖺𝗂𝗅𝗒 𝗅𝗂𝗆𝗂𝗍 𝗋𝖾𝖺𝖼𝗁𝖾𝖽.')
             number_of_emails = remaining
 
         if number_of_emails > MAX_EMAILS_PER_SESSION:
-            update.message.reply_text(f'⚠️ ʏᴏᴜ’ve ʀᴇǫᴜᴇsᴛᴇᴅ {number_of_emails} ᴇᴍᴀɪʟs. ᴛʜᴇ ᴍᴀx ᴄᴀᴘ ᴘᴇʀ sᴇssɪᴏɴ ɪs {MAX_EMAILS_PER_SESSION}. sᴇᴛᴛɪɴɪɴɢ ᴛᴏ 50.')
+            update.message.reply_text(f'𝖸𝗈𝗎 𝗁𝖺𝗏𝖾 𝗋𝖾𝗊𝗎𝖾𝗌𝗍𝖾𝖽 {number_of_emails} 𝖾𝗆𝖺𝗂𝗅𝗌. 𝖳𝗁𝖾 𝗆𝖺𝗑 𝖼𝖺𝗉 𝗉𝖾𝗋 𝗌𝖾𝗌𝗌𝗂𝗈𝗇 𝗂𝗌 {MAX_EMAILS_PER_SESSION}. 𝖲𝖾𝗍𝗍𝗂𝗇𝗀 𝗍𝗈 {MAX_EMAILS_PER_SESSION}.')
             number_of_emails = MAX_EMAILS_PER_SESSION
 
         context.user_data['number_of_emails'] = number_of_emails
-        update.message.reply_text('📊 ɴᴜᴍʙᴇʀ ᴏғ ᴇᴍᴀɪʟs ʟᴏᴄᴋᴇᴅ ɪɴ. ɴᴏᴡ, sᴇᴛ ᴛʜᴇ ᴛɪᴍᴇ ᴅᴇʟᴀʏ (ɪɴ sᴇᴄᴏɴᴅs) ʙᴇᴛᴡᴇᴇɴ ᴇᴀᴄʜ ᴇᴍᴀɪʟ.')
+        update.message.reply_text('𝖭𝗈𝗐, 𝗌𝖾𝗍 𝗍𝗁𝖾 𝗍𝗂𝗆𝖾 𝖽𝖾𝗅𝖺𝗒 (𝗂𝗇 𝗌𝖾𝖼𝗈𝗇𝖽𝗌) 𝖻𝖾𝗍𝗐𝖾𝖾𝗇 𝖾𝖺𝖼𝗁 𝖾𝗆𝖺𝗂𝗅.')
         return TIME_DELAY
     except ValueError:
-        update.message.reply_text('❌ ɪɴᴠᴀʟɪᴅ ɴᴜᴍʙᴇʀ. ʟᴇᴛ’s ᴛʀʏ ᴛʜᴀᴛ ᴀɢᴀɪɴ, ᴄʜᴀᴍᴘ.')
+        update.message.reply_text('𝖨𝗇𝗏𝖺𝗅𝗂𝖽 𝖣𝖾𝗅𝖺𝗒, 𝖳𝗋𝗒 𝖠𝗀𝖺𝗂𝗇')
         return NUMBER_OF_EMAILS
 
 
@@ -181,7 +181,7 @@ def get_time_delay(update: Update, context: CallbackContext):
 
             time.sleep(time_delay)
 
-        update.message.reply_text("🎯 ᴍɪssɪᴏɴ ᴀᴄᴄᴏᴍᴘʟɪsʜᴇᴅ. ᴀʟʟ ᴇᴍᴀɪʟs ʜᴀᴠᴇ ʙᴇᴇɴ sᴇɴᴛ. ɢᴏᴏᴅ ᴡᴏʀᴋ.")
+        update.message.reply_text("🎯 𝖬𝗂𝗌𝗌𝗂𝗈𝗇 𝖠𝖼𝖼𝗈𝗆𝗉𝗅𝗂𝗌𝗁𝖾𝖽. 𝖠𝗅𝗅 𝖤𝗆𝖺𝗂𝗅𝗌 𝗁𝖺𝗏𝖾 𝖻𝖾𝖾𝗇 𝗌𝖾𝗇𝗍 𝗌𝗎𝖼𝖼𝖾𝗌𝗌𝖿𝗎𝗅𝗅𝗒. 𝖦𝗈𝗈𝖽 𝗐𝗈𝗋𝗄.")
         return ConversationHandler.END
     except ValueError:
         update.message.reply_text('𝖨𝗇𝗏𝖺𝗅𝗂𝖽 𝖣𝖾𝗅𝖺𝗒, 𝖳𝗋𝗒 𝖠𝗀𝖺𝗂𝗇.')
@@ -195,18 +195,18 @@ def cancel(update: Update, context: CallbackContext):
         update.message.reply_text('❌ ᴜɴᴀᴜᴛʜᴏʀɪᴢᴇᴅ ᴜsᴇʀ.')
         return ConversationHandler.END
 
-    update.message.reply_text('❌ ᴏᴘᴇʀᴀᴛɪᴏɴ ᴀʙᴏʀᴛᴇᴅ. ᴜɴᴛɪʟ ɴᴇxᴛ ᴛɪᴍᴇ.')
+    update.message.reply_text('❌ 𝖮𝗉𝖾𝗋𝖺𝗍𝗂𝗈𝗇 𝖠𝖻𝗈𝗋𝗍𝖾𝖽, 𝖴𝗇𝗍𝗂𝗅 𝗇𝖾𝗑𝗍 𝗍𝗂𝗆𝖾.')
     return ConversationHandler.END
 
 # Buy command to show initial plans view
 def buy(update: Update, context: CallbackContext):
     """Handle /buy command and show the initial plans view."""
     keyboard = [
-        [InlineKeyboardButton("View Plans", callback_data='view_plans')]
+        [InlineKeyboardButton("𝖵𝗂𝖾𝗐 𝖯𝗅𝖺𝗇𝗌", callback_data='view_plans')]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text(
-        "Click below to view the available subscription plans.",
+        "𝖢𝗅𝗂𝖼𝗄 𝖻𝖾𝗅𝗈𝗐 𝗍𝗈 𝗏𝗂𝖾𝗐 𝗍𝗁𝖾 𝖺𝗏𝖺𝗂𝗅𝖺𝖻𝗅𝖾 𝗌𝗎𝖻𝗌𝖼𝗋𝗂𝗉𝗍𝗂𝗈𝗇 𝗉𝗅𝖺𝗇𝗌.",
         reply_markup=reply_markup
     )
 
@@ -216,14 +216,14 @@ def buy(update: Update, context: CallbackContext):
 def handle_buy_plans(update: Update, context: CallbackContext):
     """Edit the message to show subscription options after clicking View Plans."""
     keyboard = [
-        [InlineKeyboardButton("Silver Plan", callback_data='silver')],
-        [InlineKeyboardButton("Gold Plan", callback_data='gold')],
-        [InlineKeyboardButton("Diamond Plan", callback_data='diamond')],
-        [InlineKeyboardButton("Close", callback_data='close')]
+        [InlineKeyboardButton("𝖲𝗂𝗅𝗏𝖾𝗋 𝖯𝗅𝖺𝗇", callback_data='silver')],
+        [InlineKeyboardButton("𝖦𝗈𝗅𝖽 𝖯𝗅𝖺𝗇", callback_data='gold')],
+        [InlineKeyboardButton("𝖣𝗂𝖺𝗆𝗈𝗇𝖽 𝖯𝗅𝖺𝗇", callback_data='diamond')],
+        [InlineKeyboardButton("𝖢𝗅𝗈𝗌𝖾", callback_data='close')]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.callback_query.edit_message_text(
-        "Choose your plan:",
+        "𝖢𝗁𝗈𝗈𝗌𝖾 𝗒𝗈𝗎𝗋 𝗉𝗅𝖺𝗇 𝗒𝗈𝗎 𝗐𝗂𝗌𝗁 𝗍𝗈 𝗌𝗎𝖻𝗌𝖼𝗋𝗂𝖻𝖾",
         reply_markup=reply_markup
     )
 
@@ -235,7 +235,7 @@ def handle_plan_details(update: Update, context: CallbackContext):
     plan = update.callback_query.data
 
     if plan == 'silver':
-        message = "Silver Plan: 250 INR/month\nBenefits: Basic features"
+        message = "𝗦𝗶𝗹𝘃𝗲𝗿 𝗣𝗹𝗮𝗻\n\n 1 Week- 80INR or 1$ \n𝖶𝗂𝗍𝗁 𝗍𝗁𝗂𝗌 𝗉𝗅𝖺𝗇 𝗒𝗈𝗎 𝖼𝖺𝗇 𝖿𝗋𝖾𝖾𝗅𝗒 𝖺𝖼𝖼𝖾𝗌𝗌 𝗈𝗎𝗋 𝖬𝖺𝗌𝗌 𝖬𝖺𝗂𝗅 𝖻𝗈𝗍 𝖿𝗈𝗋 1 𝗐𝖾𝖾𝗄.\n[𝖢𝗅𝗂𝖼𝗄 𝗁𝖾𝗋𝖾 𝗍𝗈 𝗀𝖾𝗍 𝖰𝖱]("
     elif plan == 'gold':
         message = "Gold Plan: 500 INR/month\nBenefits: Advanced features"
     elif plan == 'diamond':
