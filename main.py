@@ -57,8 +57,8 @@ def start(update: Update, context: CallbackContext):
     user_id = update.message.from_user.id
     if user_id not in authorized_users:
         update.message.reply_text(
-            "``` You are not permitted to use this bot\n",
-            "≡ 𝖡𝗎𝗒 𝗆𝖾𝗆𝖻𝖾𝗋𝗌𝗁𝗂𝗉 𝗈𝖿 𝗍𝗁𝖾 𝖻𝗈𝗍 𝗍𝗈 𝖿𝗋𝖾𝖾𝗅𝗒 𝗆𝖺𝗌𝗌 𝗆𝖺𝗂𝗅 𝖺𝗇𝗒𝗐𝗁𝖾𝗋𝖾.```\n",
+            "𝗬𝗼𝘂 𝗮𝗿𝗲 𝗻𝗼𝘁 𝗽𝗲𝗿𝗺𝗶𝘁𝘁𝗲𝗱 𝘁𝗼 𝘂𝘀𝗲 𝘁𝗵𝗶𝘀 𝗯𝗼𝘁\n",
+            "≡ 𝖡𝗎𝗒 𝗆𝖾𝗆𝖻𝖾𝗋𝗌𝗁𝗂𝗉 𝗈𝖿 𝗍𝗁𝖾 𝖻𝗈𝗍 𝗍𝗈 𝖿𝗋𝖾𝖾𝗅𝗒 𝗆𝖺𝗌𝗌 𝗆𝖺𝗂𝗅 𝖺𝗇𝗒𝗐𝗁𝖾𝗋𝖾.\n",
             "⩉ 𝖳𝗈 𝗏𝗂𝖾𝗐 𝗉𝗅𝖺𝗇𝗌, 𝗁𝗂𝗍 /𝖻𝗎𝗒"
         )
         return ConversationHandler.END
@@ -236,11 +236,11 @@ def handle_plan_details(update: Update, context: CallbackContext):
     plan = update.callback_query.data
 
     if plan == 'silver':
-        message = "𝗦𝗶𝗹𝘃𝗲𝗿 𝗣𝗹𝗮𝗻\n\n 1 𝖶𝖾𝖾𝗄- 80𝖨𝖭𝖱 or 1$ \n\n≡𝖶𝗂𝗍𝗁 𝗍𝗁𝗂𝗌 𝗉𝗅𝖺𝗇 𝗒𝗈𝗎 𝖼𝖺𝗇 𝖿𝗋𝖾𝖾𝗅𝗒 𝖺𝖼𝖼𝖾𝗌𝗌 𝗈𝗎𝗋 𝖬𝖺𝗌𝗌 𝖬𝖺𝗂𝗅 𝖻𝗈𝗍 𝖿𝗈𝗋 1 𝗐𝖾𝖾𝗄.\n⩉[𝖢𝗅𝗂𝖼𝗄 𝗁𝖾𝗋𝖾 𝗍𝗈 𝗀𝖾𝗍 𝖰𝖱](https://i.ibb.co/w0VpVpk/file-5661.jpg)\n⌕ 𝖥𝗈𝗋 𝗈𝗍𝗁𝖾𝗋 𝗉𝖺𝗒𝗆𝖾𝗇𝗍 𝗆𝖾𝗍𝗁𝗈𝖽𝗌, 𝖼𝗈𝗇𝗍𝖺𝖼𝗍 @cenzeo"
+        message = "𝗦𝗶𝗹𝘃𝗲𝗿 𝗣𝗹𝗮𝗻\n\n 1 𝖶𝖾𝖾𝗄- 80𝖨𝖭𝖱 or 1$ \n\n≡ 𝖶𝗂𝗍𝗁 𝗍𝗁𝗂𝗌 𝗉𝗅𝖺𝗇 𝗒𝗈𝗎 𝖼𝖺𝗇 𝖿𝗋𝖾𝖾𝗅𝗒 𝖺𝖼𝖼𝖾𝗌𝗌 𝗈𝗎𝗋 𝖬𝖺𝗌𝗌 𝖬𝖺𝗂𝗅 𝖻𝗈𝗍 𝖿𝗈𝗋 1 𝗐𝖾𝖾𝗄.\n⩉ [𝖢𝗅𝗂𝖼𝗄 𝗁𝖾𝗋𝖾 𝗍𝗈 𝗀𝖾𝗍 𝖰𝖱](https://i.ibb.co/w0VpVpk/file-5661.jpg)\n⌕ 𝖥𝗈𝗋 𝗈𝗍𝗁𝖾𝗋 𝗉𝖺𝗒𝗆𝖾𝗇𝗍 𝗆𝖾𝗍𝗁𝗈𝖽𝗌, 𝖼𝗈𝗇𝗍𝖺𝖼𝗍 @cenzeo"
     elif plan == 'gold':
-        message = "𝗚𝗼𝗹𝗱 𝗣𝗹𝗮𝗻\n\n 15 𝖣𝖺𝗒𝗌- 150𝖨𝖭𝖱 or 2$ \n\n≡𝖶𝗂𝗍𝗁 𝗍𝗁𝗂𝗌 𝗉𝗅𝖺𝗇 𝗒𝗈𝗎 𝖼𝖺𝗇 𝖿𝗋𝖾𝖾𝗅𝗒 𝖺𝖼𝖼𝖾𝗌𝗌 𝗈𝗎𝗋 𝖬𝖺𝗌𝗌 𝖬𝖺𝗂𝗅 𝖻𝗈𝗍 𝖿𝗈𝗋 15 𝖣𝖺𝗒𝗌.\n⩉[𝖢𝗅𝗂𝖼𝗄 𝗁𝖾𝗋𝖾 𝗍𝗈 𝗀𝖾𝗍 𝖰𝖱](https://i.ibb.co/w0VpVpk/file-5661.jpg)\n⌕ 𝖥𝗈𝗋 𝗈𝗍𝗁𝖾𝗋 𝗉𝖺𝗒𝗆𝖾𝗇𝗍 𝗆𝖾𝗍𝗁𝗈𝖽𝗌, 𝖼𝗈𝗇𝗍𝖺𝖼𝗍 @cenzeo"
+        message = "𝗚𝗼𝗹𝗱 𝗣𝗹𝗮𝗻\n\n 15 𝖣𝖺𝗒𝗌- 150𝖨𝖭𝖱 or 2$ \n\n≡ 𝖶𝗂𝗍𝗁 𝗍𝗁𝗂𝗌 𝗉𝗅𝖺𝗇 𝗒𝗈𝗎 𝖼𝖺𝗇 𝖿𝗋𝖾𝖾𝗅𝗒 𝖺𝖼𝖼𝖾𝗌𝗌 𝗈𝗎𝗋 𝖬𝖺𝗌𝗌 𝖬𝖺𝗂𝗅 𝖻𝗈𝗍 𝖿𝗈𝗋 15 𝖣𝖺𝗒𝗌.\n⩉ [𝖢𝗅𝗂𝖼𝗄 𝗁𝖾𝗋𝖾 𝗍𝗈 𝗀𝖾𝗍 𝖰𝖱](https://i.ibb.co/w0VpVpk/file-5661.jpg)\n⌕ 𝖥𝗈𝗋 𝗈𝗍𝗁𝖾𝗋 𝗉𝖺𝗒𝗆𝖾𝗇𝗍 𝗆𝖾𝗍𝗁𝗈𝖽𝗌, 𝖼𝗈𝗇𝗍𝖺𝖼𝗍 @cenzeo"
     elif plan == 'diamond':
-        message = "𝗗𝗶𝗮𝗺𝗼𝗻𝗱 𝗣𝗹𝗮𝗻\n\n 30 𝖣𝖺𝗒𝗌- 250𝖨𝖭𝖱 or 4$ \n\n≡𝖶𝗂𝗍𝗁 𝗍𝗁𝗂𝗌 𝗉𝗅𝖺𝗇 𝗒𝗈𝗎 𝖼𝖺𝗇 𝖿𝗋𝖾𝖾𝗅𝗒 𝖺𝖼𝖼𝖾𝗌𝗌 𝗈𝗎𝗋 𝖬𝖺𝗌𝗌 𝖬𝖺𝗂𝗅 𝖻𝗈𝗍 𝖿𝗈𝗋 15 𝖣𝖺𝗒𝗌.\n⩉[𝖢𝗅𝗂𝖼𝗄 𝗁𝖾𝗋𝖾 𝗍𝗈 𝗀𝖾𝗍 𝖰𝖱](https://i.ibb.co/w0VpVpk/file-5661.jpg)\n⌕ 𝖥𝗈𝗋 𝗈𝗍𝗁𝖾𝗋 𝗉𝖺𝗒𝗆𝖾𝗇𝗍 𝗆𝖾𝗍𝗁𝗈𝖽𝗌, 𝖼𝗈𝗇𝗍𝖺𝖼𝗍 @cenzeo"
+        message = "𝗗𝗶𝗮𝗺𝗼𝗻𝗱 𝗣𝗹𝗮𝗻\n\n 30 𝖣𝖺𝗒𝗌- 250𝖨𝖭𝖱 or 4$ \n\n≡ 𝖶𝗂𝗍𝗁 𝗍𝗁𝗂𝗌 𝗉𝗅𝖺𝗇 𝗒𝗈𝗎 𝖼𝖺𝗇 𝖿𝗋𝖾𝖾𝗅𝗒 𝖺𝖼𝖼𝖾𝗌𝗌 𝗈𝗎𝗋 𝖬𝖺𝗌𝗌 𝖬𝖺𝗂𝗅 𝖻𝗈𝗍 𝖿𝗈𝗋 15 𝖣𝖺𝗒𝗌.\n⩉ [𝖢𝗅𝗂𝖼𝗄 𝗁𝖾𝗋𝖾 𝗍𝗈 𝗀𝖾𝗍 𝖰𝖱](https://i.ibb.co/w0VpVpk/file-5661.jpg)\n⌕ 𝖥𝗈𝗋 𝗈𝗍𝗁𝖾𝗋 𝗉𝖺𝗒𝗆𝖾𝗇𝗍 𝗆𝖾𝗍𝗁𝗈𝖽𝗌, 𝖼𝗈𝗇𝗍𝖺𝖼𝗍 @cenzeo"
 
     keyboard = [
         [InlineKeyboardButton("𝖡𝖺𝖼𝗄", callback_data='view_plans')],
