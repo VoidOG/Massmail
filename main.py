@@ -235,15 +235,15 @@ def handle_plan_details(update: Update, context: CallbackContext):
     plan = update.callback_query.data
 
     if plan == 'silver':
-        message = "𝗦𝗶𝗹𝘃𝗲𝗿 𝗣𝗹𝗮𝗻\n\n 1 Week- 80INR or 1$ \n𝖶𝗂𝗍𝗁 𝗍𝗁𝗂𝗌 𝗉𝗅𝖺𝗇 𝗒𝗈𝗎 𝖼𝖺𝗇 𝖿𝗋𝖾𝖾𝗅𝗒 𝖺𝖼𝖼𝖾𝗌𝗌 𝗈𝗎𝗋 𝖬𝖺𝗌𝗌 𝖬𝖺𝗂𝗅 𝖻𝗈𝗍 𝖿𝗈𝗋 1 𝗐𝖾𝖾𝗄.\n[𝖢𝗅𝗂𝖼𝗄 𝗁𝖾𝗋𝖾 𝗍𝗈 𝗀𝖾𝗍 𝖰𝖱]("
+        message = "𝗦𝗶𝗹𝘃𝗲𝗿 𝗣𝗹𝗮𝗻\n\n 1 𝖶𝖾𝖾𝗄- 80𝖨𝖭𝖱 or 1$ \n\n≡𝖶𝗂𝗍𝗁 𝗍𝗁𝗂𝗌 𝗉𝗅𝖺𝗇 𝗒𝗈𝗎 𝖼𝖺𝗇 𝖿𝗋𝖾𝖾𝗅𝗒 𝖺𝖼𝖼𝖾𝗌𝗌 𝗈𝗎𝗋 𝖬𝖺𝗌𝗌 𝖬𝖺𝗂𝗅 𝖻𝗈𝗍 𝖿𝗈𝗋 1 𝗐𝖾𝖾𝗄.\n⩉[𝖢𝗅𝗂𝖼𝗄 𝗁𝖾𝗋𝖾 𝗍𝗈 𝗀𝖾𝗍 𝖰𝖱](https://i.ibb.co/w0VpVpk/file-5661.jpg)\n⌕ 𝖥𝗈𝗋 𝗈𝗍𝗁𝖾𝗋 𝗉𝖺𝗒𝗆𝖾𝗇𝗍 𝗆𝖾𝗍𝗁𝗈𝖽𝗌, 𝖼𝗈𝗇𝗍𝖺𝖼𝗍 @cenzeo"
     elif plan == 'gold':
-        message = "Gold Plan: 500 INR/month\nBenefits: Advanced features"
+        message = "𝗚𝗼𝗹𝗱 𝗣𝗹𝗮𝗻\n\n 15 𝖣𝖺𝗒𝗌- 150𝖨𝖭𝖱 or 2$ \n\n≡𝖶𝗂𝗍𝗁 𝗍𝗁𝗂𝗌 𝗉𝗅𝖺𝗇 𝗒𝗈𝗎 𝖼𝖺𝗇 𝖿𝗋𝖾𝖾𝗅𝗒 𝖺𝖼𝖼𝖾𝗌𝗌 𝗈𝗎𝗋 𝖬𝖺𝗌𝗌 𝖬𝖺𝗂𝗅 𝖻𝗈𝗍 𝖿𝗈𝗋 15 𝖣𝖺𝗒𝗌.\n⩉[𝖢𝗅𝗂𝖼𝗄 𝗁𝖾𝗋𝖾 𝗍𝗈 𝗀𝖾𝗍 𝖰𝖱](https://i.ibb.co/w0VpVpk/file-5661.jpg)\n⌕ 𝖥𝗈𝗋 𝗈𝗍𝗁𝖾𝗋 𝗉𝖺𝗒𝗆𝖾𝗇𝗍 𝗆𝖾𝗍𝗁𝗈𝖽𝗌, 𝖼𝗈𝗇𝗍𝖺𝖼𝗍 @cenzeo"
     elif plan == 'diamond':
-        message = "Diamond Plan: 1000 INR/month\nBenefits: Premium features"
+        message = "𝗗𝗶𝗮𝗺𝗼𝗻𝗱 𝗣𝗹𝗮𝗻\n\n 30 𝖣𝖺𝗒𝗌- 250𝖨𝖭𝖱 or 4$ \n\n≡𝖶𝗂𝗍𝗁 𝗍𝗁𝗂𝗌 𝗉𝗅𝖺𝗇 𝗒𝗈𝗎 𝖼𝖺𝗇 𝖿𝗋𝖾𝖾𝗅𝗒 𝖺𝖼𝖼𝖾𝗌𝗌 𝗈𝗎𝗋 𝖬𝖺𝗌𝗌 𝖬𝖺𝗂𝗅 𝖻𝗈𝗍 𝖿𝗈𝗋 15 𝖣𝖺𝗒𝗌.\n⩉[𝖢𝗅𝗂𝖼𝗄 𝗁𝖾𝗋𝖾 𝗍𝗈 𝗀𝖾𝗍 𝖰𝖱](https://i.ibb.co/w0VpVpk/file-5661.jpg)\n⌕ 𝖥𝗈𝗋 𝗈𝗍𝗁𝖾𝗋 𝗉𝖺𝗒𝗆𝖾𝗇𝗍 𝗆𝖾𝗍𝗁𝗈𝖽𝗌, 𝖼𝗈𝗇𝗍𝖺𝖼𝗍 @cenzeo"
 
     keyboard = [
-        [InlineKeyboardButton("Back", callback_data='view_plans')],
-        [InlineKeyboardButton("Close", callback_data='close')]
+        [InlineKeyboardButton("𝖡𝖺𝖼𝗄", callback_data='view_plans')],
+        [InlineKeyboardButton("𝖢𝗅𝗈𝗌𝖾", callback_data='close')]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.callback_query.edit_message_text(
@@ -263,7 +263,7 @@ def close(update: Update, context: CallbackContext):
 # Cancel the conversation
 def cancel(update: Update, context: CallbackContext):
     """Cancel the conversation."""
-    update.message.reply_text("Operation cancelled.")
+    update.message.reply_text("𝖮𝗉𝖾𝗋𝖺𝗍𝗂𝗈𝗇 𝖢𝖺𝗇𝖼𝖾𝗅𝗅𝖾𝖽.")
     return ConversationHandler.END
 
 # Main function to handle the bot's lifecycle
