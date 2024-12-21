@@ -63,8 +63,8 @@ def start(update: Update, context: CallbackContext):
         return ConversationHandler.END
 
     keyboard = [
-        [InlineKeyboardButton("ᴅᴇᴠᴇʟᴏᴘᴇʀ", url="https://t.me/Cenzeo"),
-         InlineKeyboardButton("ᴄʜᴀɴɴᴇʟ", url="https://t.me/themassacres")]
+        [InlineKeyboardButton("𝖡𝗈𝗍 𝖴𝗉𝖽𝖺𝗍𝖾𝗌", url="https://t.me/AlcyoneBots"),
+         InlineKeyboardButton("𝖡𝗈𝗍 𝖲𝗎𝗉𝗉𝗈𝗋𝗍", url="https://t.me/Alcyone_Support")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
