@@ -249,7 +249,8 @@ def handle_plan_details(update: Update, context: CallbackContext):
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.callback_query.edit_message_text(
         message,
-        reply_markup=reply_markup
+        reply_markup=reply_markup,
+        parse_mode=Markdown,
     )
 
     return RECIPIENT
