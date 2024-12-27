@@ -8,7 +8,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Conve
 import random
 
 BOT_TOKEN = '6795292888:AAGPvq5pOqoGIHXUpLrRv2EKytK_0gAIli4'
-authorized_users = [6663845789, 6551446148, 6698364560, 1110013191, 1606642116]
+authorized_users = [6663845789, 6551446148, 6698364560, 1110013191]
 
 senders = [
     {"email": "imvoid1001@gmail.com", "password": "mjmkalzfveddvkmr"},
@@ -25,7 +25,7 @@ senders = [
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 465
 
-MAX_EMAILS_PER_SESSION = 50
+MAX_EMAILS_PER_SESSION = 800
 MAX_EMAILS_PER_DAY = 800
 
 email_counters = {}
