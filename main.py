@@ -25,7 +25,7 @@ senders = [
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 465
 
-MAX_EMAILS_PER_SESSION = 800
+MAX_EMAILS_PER_SESSION = 50
 MAX_EMAILS_PER_DAY = 800
 
 email_counters = {}
