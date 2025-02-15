@@ -7,7 +7,7 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackQueryHandler, CallbackContext
 import random
 
-BOT_TOKEN = '6795292888:AAEiguwxf1xuR_F94P6ww5mdZmHogSItHZs'
+BOT_TOKEN = '6795292888:AAE4Twu2yrZpKC8kbdkE5fCQvcOsBDfLId0'
 authorized_users = [6663845789, 6551446148, 6698364560, 1110013191]
 
 senders = [
@@ -279,7 +279,7 @@ def cancel(update: Update, context: CallbackContext):
 # Main function to handle the bot's lifecycle
 def main():
     """Start the bot and handle commands."""
-    updater = Updater("6795292888:AAGPvq5pOqoGIHXUpLrRv2EKytK_0gAIli4", use_context=True)
+    updater = Updater("6795292888:AAE4Twu2yrZpKC8kbdkE5fCQvcOsBDfLId0", use_context=True)
     dispatcher = updater.dispatcher
 
     # Add command handlers for /start and /buy
