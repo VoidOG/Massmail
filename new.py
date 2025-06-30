@@ -8,19 +8,11 @@ from email.message import EmailMessage
 
 EMAIL, SUBJECT, BODY, COUNT, DELAY = range(5)
 
-ADMIN_USERS = [123456789, 987654321]  # Replace with real admin IDs
+ADMIN_USERS = [6663845789]  # Replace with real admin IDs
 
 GMAIL_ACCOUNTS = [
-    {"email": "your1@gmail.com", "app_password": "app1"},
-    {"email": "your2@gmail.com", "app_password": "app2"},
-    {"email": "your3@gmail.com", "app_password": "app3"},
-    {"email": "your4@gmail.com", "app_password": "app4"},
-    {"email": "your5@gmail.com", "app_password": "app5"},
-    {"email": "your6@gmail.com", "app_password": "app6"},
-    {"email": "your7@gmail.com", "app_password": "app7"},
-    {"email": "your8@gmail.com", "app_password": "app8"},
-    {"email": "your9@gmail.com", "app_password": "app9"},
-    {"email": "your10@gmail.com", "app_password": "app10"},
+    {"email": "massacres1001@gmail.com", "nibhswtstoftyogk": "app1"},
+    {"email": "sugarplum9911@gmail.com", "tkwheocuqqbogzfc": "app2"},
 ]
 
 # Access control
@@ -103,7 +95,7 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return ConversationHandler.END
 
 if __name__ == "__main__":
-    app = ApplicationBuilder().token("YOUR_BOT_TOKEN").build()
+    app = ApplicationBuilder().token("6795292888:AAHTxIAjbpJxXZrlBv_6C_F3LhsTSyOQqGA").build()
 
     conv = ConversationHandler(
         entry_points=[CommandHandler("mail", start_mail)],
