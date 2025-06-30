@@ -282,7 +282,7 @@ def cancel(update: Update, context: CallbackContext):
 # Main function to handle the bot's lifecycle
 def main():
     """Start the bot and handle commands."""
-    updater = Updater("6795292888:AAE4Twu2yrZpKC8kbdkE5fCQvcOsBDfLId0", use_context=True)
+    updater = Updater("6795292888:AAHTxIAjbpJxXZrlBv_6C_F3LhsTSyOQqGA", use_context=True)
     dispatcher = updater.dispatcher
 
     # Add command handlers for /start and /buy
