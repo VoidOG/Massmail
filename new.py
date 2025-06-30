@@ -3,24 +3,32 @@ from telegram.ext import (
     ApplicationBuilder, CommandHandler, MessageHandler, filters,
     ContextTypes, ConversationHandler
 )
-import smtplib, ssl, asyncio, socks, socket
+import asyncio
 from email.message import EmailMessage
+from smtplib import SMTP
+from smtplib_socks import SMTP as ProxiedSMTP  # <-- Use this library for proxy support
+import ssl
 
 EMAIL, SUBJECT, BODY, COUNT, DELAY = range(5)
 
-ADMIN_USERS = [6663845789]  # Replace with real admin IDs
+BOT_TOKEN = "6795292888:AAHTxIAjbpJxXZrlBv_6C_F3LhsTSyOQqGA"
+LOG_GROUP = -1002854086015
+ADMIN_USERS = [6663845789]
 
+# Gmail accounts (App Passwords)
 GMAIL_ACCOUNTS = [
     {"email": "massacres1001@gmail.com", "app_password": "nibhswtstoftyogk"},
     {"email": "sugarplum9911@gmail.com", "app_password": "tkwheocuqqbogzfc"},
 ]
 
-# Set SOCKS5 proxy globally
-socks.set_default_proxy(socks.SOCKS5, "192.252.210.233", 4145)
-socket.socket = socks.socksocket
+# SOCKS5 proxy
+PROXY_HOST = "192.252.210.233"
+PROXY_PORT = 4145
+
 
 def is_admin(user_id: int):
     return user_id in ADMIN_USERS
+
 
 async def start_mail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not is_admin(update.effective_user.id):
@@ -29,20 +37,24 @@ async def start_mail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("📧 Enter recipient email address:")
     return EMAIL
 
+
 async def get_email(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["recipient"] = update.message.text
     await update.message.reply_text("✉️ Enter email subject:")
     return SUBJECT
+
 
 async def get_subject(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["subject"] = update.message.text
     await update.message.reply_text("📝 Enter email body:")
     return BODY
 
+
 async def get_body(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["body"] = update.message.text
     await update.message.reply_text("🔁 How many times to send the email?")
     return COUNT
+
 
 async def get_count(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
@@ -52,6 +64,7 @@ async def get_count(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except:
         await update.message.reply_text("❗ Please enter a valid number.")
         return COUNT
+
 
 async def get_delay(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
@@ -72,6 +85,7 @@ async def get_delay(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     for i in range(count):
         account = GMAIL_ACCOUNTS[i % len(GMAIL_ACCOUNTS)]
+
         msg = EmailMessage()
         msg["From"] = account["email"]
         msg["To"] = recipient
@@ -79,27 +93,33 @@ async def get_delay(update: Update, context: ContextTypes.DEFAULT_TYPE):
         msg.set_content(body)
 
         try:
-            server = smtplib.SMTP("smtp.gmail.com", 587, timeout=20)
-            server.starttls()
-            server.login(account["email"], account["app_password"])
-            server.send_message(msg)
-            server.quit()
+            # Using proxy for SMTP
+            with ProxiedSMTP("smtp.gmail.com", 587,
+                             proxy_host=PROXY_HOST,
+                             proxy_port=PROXY_PORT,
+                             proxy_type="socks5") as server:
+                server.ehlo()
+                server.starttls(context=ssl.create_default_context())
+                server.login(account["email"], account["app_password"])
+                server.send_message(msg)
             success += 1
-            await update.message.reply_text(f"✅ Email {i+1}/{count} sent from {account['email']}")
+            await update.message.reply_text(f"✅ Email {i + 1}/{count} sent from {account['email']}")
         except Exception as e:
-            await update.message.reply_text(f"❌ Email {i+1}/{count} failed from {account['email']} — {e}")
+            await update.message.reply_text(f"❌ Email {i + 1}/{count} failed from {account['email']} — {e}")
 
         await asyncio.sleep(delay)
 
     await update.message.reply_text(f"✅ Mailing completed.\n\n📬 Total successful: {success}/{count}")
     return ConversationHandler.END
 
+
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("❌ Mailing cancelled.")
     return ConversationHandler.END
 
+
 if __name__ == "__main__":
-    app = ApplicationBuilder().token("6795292888:AAHTxIAjbpJxXZrlBv_6C_F3LhsTSyOQqGA").build()
+    app = ApplicationBuilder().token(BOT_TOKEN).build()
 
     conv = ConversationHandler(
         entry_points=[CommandHandler("mail", start_mail)],
