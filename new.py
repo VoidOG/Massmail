@@ -3,7 +3,7 @@ from telegram.ext import (
     ApplicationBuilder, CommandHandler, MessageHandler, filters,
     ContextTypes, ConversationHandler
 )
-import smtplib, ssl, asyncio
+import smtplib, ssl, asyncio, socks, socket
 from email.message import EmailMessage
 
 EMAIL, SUBJECT, BODY, COUNT, DELAY = range(5)
@@ -11,11 +11,13 @@ EMAIL, SUBJECT, BODY, COUNT, DELAY = range(5)
 ADMIN_USERS = [6663845789]  # Replace with real admin IDs
 
 GMAIL_ACCOUNTS = [
-    {"email": "massacres1001@gmail.com", "nibhswtstoftyogk": "app1"},
-    {"email": "sugarplum9911@gmail.com", "tkwheocuqqbogzfc": "app2"},
+    {"email": "massacres1001@gmail.com", "app_password": "nibhswtstoftyogk"},
+    {"email": "sugarplum9911@gmail.com", "app_password": "tkwheocuqqbogzfc"},
 ]
 
-LOG_CHAT_ID = -1002854086015  # Log group ID
+# Set SOCKS5 proxy globally
+socks.set_default_proxy(socks.SOCKS5, "192.252.210.233", 4145)
+socket.socket = socks.socksocket
 
 def is_admin(user_id: int):
     return user_id in ADMIN_USERS
@@ -77,23 +79,19 @@ async def get_delay(update: Update, context: ContextTypes.DEFAULT_TYPE):
         msg.set_content(body)
 
         try:
-            context_ssl = ssl.create_default_context()
-            with smtplib.SMTP("smtp.gmail.com", 587) as server:
-                server.starttls(context=context_ssl)
-                server.login(account["email"], account["app_password"])
-                server.send_message(msg)
+            server = smtplib.SMTP("smtp.gmail.com", 587, timeout=20)
+            server.starttls()
+            server.login(account["email"], account["app_password"])
+            server.send_message(msg)
+            server.quit()
             success += 1
             await update.message.reply_text(f"✅ Email {i+1}/{count} sent from {account['email']}")
         except Exception as e:
-            error_text = f"❌ Email {i+1}/{count} failed from {account['email']} — {e}"
-            await update.message.reply_text(error_text)
-            await context.bot.send_message(LOG_CHAT_ID, error_text)
+            await update.message.reply_text(f"❌ Email {i+1}/{count} failed from {account['email']} — {e}")
 
         await asyncio.sleep(delay)
 
-    final_msg = f"✅ Mailing completed.\n\n📬 Total successful: {success}/{count}"
-    await update.message.reply_text(final_msg)
-    await context.bot.send_message(LOG_CHAT_ID, final_msg)
+    await update.message.reply_text(f"✅ Mailing completed.\n\n📬 Total successful: {success}/{count}")
     return ConversationHandler.END
 
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
