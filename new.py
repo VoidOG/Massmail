@@ -15,7 +15,8 @@ GMAIL_ACCOUNTS = [
     {"email": "sugarplum9911@gmail.com", "tkwheocuqqbogzfc": "app2"},
 ]
 
-# Access control
+LOG_CHAT_ID = -1002854086015  # Log group ID
+
 def is_admin(user_id: int):
     return user_id in ADMIN_USERS
 
@@ -77,17 +78,22 @@ async def get_delay(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         try:
             context_ssl = ssl.create_default_context()
-            with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context_ssl) as server:
+            with smtplib.SMTP("smtp.gmail.com", 587) as server:
+                server.starttls(context=context_ssl)
                 server.login(account["email"], account["app_password"])
                 server.send_message(msg)
             success += 1
             await update.message.reply_text(f"✅ Email {i+1}/{count} sent from {account['email']}")
         except Exception as e:
-            await update.message.reply_text(f"❌ Email {i+1}/{count} failed from {account['email']} — {e}")
+            error_text = f"❌ Email {i+1}/{count} failed from {account['email']} — {e}"
+            await update.message.reply_text(error_text)
+            await context.bot.send_message(LOG_CHAT_ID, error_text)
 
         await asyncio.sleep(delay)
 
-    await update.message.reply_text(f"✅ Mailing completed.\n\n📬 Total successful: {success}/{count}")
+    final_msg = f"✅ Mailing completed.\n\n📬 Total successful: {success}/{count}"
+    await update.message.reply_text(final_msg)
+    await context.bot.send_message(LOG_CHAT_ID, final_msg)
     return ConversationHandler.END
 
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
