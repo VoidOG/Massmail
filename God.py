@@ -23,7 +23,7 @@ SMTP_SERVER = "smtp.office365.com"
 SMTP_PORT = 587
 
 # ------------ LOAD SMTP ACCOUNTS FROM FILE -------------
-SMTP_FILE_PATH = "/storage/SMTP.txt"  # Change if needed based on your storage path
+SMTP_FILE_PATH = "/storage/emulated"  # Change if needed based on your storage path
 
 def load_smtp_accounts(filename):
     accounts = []
