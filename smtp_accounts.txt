@@ -130,3 +130,4 @@ smtp.office365.com|587|abdul.majid1@csn.edu.pk|Lahore47
 smtp.office365.com|587|jair.salamanca.c@uni.pe|Elpieroloco21
 smtp.office365.com|587|051043592@ecampus.ut.ac.id|Yasir27092002
 smtp.office365.com|587|rsv21341@rsv.ac.th|Rsv200655
+
