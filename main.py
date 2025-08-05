@@ -7,7 +7,7 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackQueryHandler, CallbackContext
 import random
 
-BOT_TOKEN = '6795292888:AAE4Twu2yrZpKC8kbdkE5fCQvcOsBDfLId0'
+BOT_TOKEN = '6795292888:AAGsLo0eBxD0off6ZrnScTrLO1BuWdcUmfY'
 authorized_users = [6663845789, 6551446148, 6698364560, 1110013191]
 
 senders = [
